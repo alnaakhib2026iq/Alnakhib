@@ -1,362 +1,210 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d6efd">
+  <title>الناخب</title>
 
-    <title>الناخب</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    body {
+      margin: 0;
+      font-family: Arial, Tahoma, sans-serif;
+      background: #f3f6fa;
+      color: #222;
+    }
 
-        body {
-            margin: 0;
-            font-family: Arial, Tahoma, sans-serif;
-            background: linear-gradient(135deg, #061b35, #0b4f78);
-            min-height: 100vh;
-            color: #fff;
-            padding-bottom: 120px;
-        }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px 15px 110px;
+    }
 
-        .header {
-            text-align: center;
-            padding: 30px 15px 20px;
-        }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        .header h1 {
-            margin: 0;
-            font-size: 30px;
-        }
+    .header h1 {
+      color: #0d6efd;
+      margin-bottom: 5px;
+    }
 
-        .header p {
-            margin-top: 10px;
-            color: #d8edf7;
-        }
+    .header p {
+      color: #666;
+    }
 
-        .container {
-            width: 92%;
-            max-width: 600px;
-            margin: auto;
-        }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
 
-        .card {
-            background: rgba(255,255,255,0.97);
-            color: #17202a;
-            border-radius: 22px;
-            padding: 24px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-        }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
 
-        .field {
-            margin-bottom: 18px;
-        }
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-top: 7px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+    input:focus {
+      outline: none;
+      border-color: #0d6efd;
+    }
 
-        input,
-        select {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #d2d7dc;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            background: #fff;
-        }
+    .save {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #0d6efd;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+    }
 
-        input:focus,
-        select:focus {
-            border-color: #087ea4;
-            box-shadow: 0 0 0 3px rgba(8,126,164,0.12);
-        }
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      color: #555;
+    }
 
-        .file-box {
-            border: 2px dashed #9bb7c5;
-            padding: 15px;
-            border-radius: 14px;
-            background: #f6fafc;
-        }
-
-        .submit-btn {
-            width: 100%;
-            border: none;
-            border-radius: 14px;
-            padding: 15px;
-            font-size: 17px;
-            font-weight: bold;
-            color: white;
-            background: #087ea4;
-            cursor: pointer;
-        }
-
-        .submit-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* زر البصمة الثابت */
-        .fingerprint-button {
-            position: fixed;
-            bottom: 22px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.9);
-            background: #087ea4;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 38px;
-            cursor: pointer;
-            z-index: 9999;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-
-        .fingerprint-button:active {
-            transform: translateX(-50%) scale(0.93);
-        }
-
-        .fingerprint-text {
-            position: fixed;
-            bottom: 3px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 11px;
-            color: white;
-            z-index: 10000;
-            pointer-events: none;
-        }
-
-        .message {
-            display: none;
-            margin-top: 15px;
-            padding: 13px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .success {
-            background: #d9f7e5;
-            color: #146c38;
-        }
-
-        .error {
-            background: #ffe1e1;
-            color: #a51d1d;
-        }
-    </style>
+    .fingerprint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: none;
+      background: #0d6efd;
+      color: white;
+      font-size: 38px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+      z-index: 1000;
+    }
+  </style>
 </head>
 
 <body>
 
+  <div class="container">
+
     <div class="header">
-        <h1>🗳️ تسجيل الناخب</h1>
-        <p>يرجى إدخال المعلومات المطلوبة</p>
+      <h1>الناخب</h1>
+      <p>تسجيل بيانات الناخب</p>
     </div>
 
-    <div class="container">
+    <div class="card">
 
-        <div class="card">
+      <form id="voterForm">
 
-            <form id="voterForm">
+        <label>الاسم الكامل</label>
+        <input type="text" id="name" required>
 
-                <div class="field">
-                    <label>الاسم الكامل</label>
-                    <input
-                        type="text"
-                        id="fullName"
-                        placeholder="أدخل الاسم الكامل"
-                        required>
-                </div>
+        <label>رقم الهاتف</label>
+        <input type="tel" id="phone" required>
 
-                <div class="field">
-                    <label>رقم الهاتف</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        placeholder="07xxxxxxxxx"
-                        required>
-                </div>
+        <label>المحافظة</label>
+        <input type="text" id="governorate" required>
 
-                <div class="field">
-                    <label>المحافظة</label>
-                    <select id="governorate" required>
-                        <option value="">اختر المحافظة</option>
-                        <option>بغداد</option>
-                        <option>الأنبار</option>
-                        <option>بابل</option>
-                        <option>البصرة</option>
-                        <option>ديالى</option>
-                        <option>القادسية</option>
-                        <option>كربلاء</option>
-                        <option>كركوك</option>
-                        <option>ميسان</option>
-                        <option>المثنى</option>
-                        <option>النجف</option>
-                        <option>نينوى</option>
-                        <option>صلاح الدين</option>
-                        <option>ذي قار</option>
-                        <option>واسط</option>
-                        <option>أربيل</option>
-                        <option>دهوك</option>
-                        <option>السليمانية</option>
-                    </select>
-                </div>
+        <label>القضاء</label>
+        <input type="text" id="district" required>
 
-                <div class="field">
-                    <label>القضاء</label>
-                    <input
-                        type="text"
-                        id="district"
-                        placeholder="أدخل اسم القضاء"
-                        required>
-                </div>
+        <label>مركز الاقتراع</label>
+        <input type="text" id="center" required>
 
-                <div class="field">
-                    <label>المركز الانتخابي</label>
-                    <input
-                        type="text"
-                        id="center"
-                        placeholder="أدخل المركز الانتخابي"
-                        required>
-                </div>
+        <label>صورة بطاقة الناخب</label>
+        <input type="file" accept="image/*" capture="environment" required>
 
-                <div class="field">
-                    <label>صورة بطاقة الناخب</label>
-                    <div class="file-box">
-                        <input
-                            type="file"
-                            id="voterCard"
-                            accept="image/*"
-                            required>
-                    </div>
-                </div>
+        <label>صورة الهوية الشخصية</label>
+        <input type="file" accept="image/*" capture="environment" required>
 
-                <div class="field">
-                    <label>صورة الهوية الشخصية</label>
-                    <div class="file-box">
-                        <input
-                            type="file"
-                            id="personalId"
-                            accept="image/*"
-                            required>
-                    </div>
-                </div>
+        <button class="save" type="submit">
+          حفظ البيانات
+        </button>
 
-                <button type="submit" class="submit-btn">
-                    حفظ البيانات
-                </button>
+      </form>
 
-                <div id="formMessage" class="message"></div>
+      <div class="message" id="message"></div>
 
-            </form>
-
-        </div>
     </div>
+  </div>
 
-    <!-- أيقونة البصمة -->
-    <button
-        class="fingerprint-button"
-        id="fingerprintButton"
-        aria-label="استخدام بصمة الإصبع">
-        👆
-    </button>
+  <button class="fingerprint" id="fingerprint" title="البصمة">
+    👆
+  </button>
 
-    <div class="fingerprint-text">
-        بصمة الإصبع
-    </div>
+  <script>
 
+    const form = document.getElementById("voterForm");
+    const message = document.getElementById("message");
+    const fingerprint = document.getElementById("fingerprint");
 
-<script>
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
 
-const fingerprintButton =
-    document.getElementById("fingerprintButton");
+      message.textContent =
+        "تم إدخال البيانات. سيتم ربط الحفظ الآمن بالخادم لاحقًا.";
+    });
 
-const formMessage =
-    document.getElementById("formMessage");
+    fingerprint.addEventListener("click", async function() {
 
-
-// التحقق من دعم البصمة / Passkey
-fingerprintButton.addEventListener("click", async function () {
-
-    formMessage.style.display = "block";
-    formMessage.className = "message";
-
-    if (!window.PublicKeyCredential) {
-
-        formMessage.classList.add("error");
-
-        formMessage.textContent =
-            "هذا الجهاز أو المتصفح لا يدعم استخدام البصمة.";
-
+      if (!window.PublicKeyCredential) {
+        message.textContent =
+          "هذا الجهاز أو المتصفح لا يدعم البصمة.";
         return;
-    }
+      }
 
-    try {
+      if (!window.isSecureContext) {
+        message.textContent =
+          "البصمة تحتاج إلى اتصال HTTPS آمن.";
+        return;
+      }
 
-        /*
-         * ملاحظة:
-         * التحقق الحقيقي من WebAuthn يحتاج إلى خادم Backend
-         * لإنشاء challenge والتحقق من الاستجابة.
-         *
-         * هذا الجزء يختبر دعم الجهاز للنظام.
-         */
+      try {
 
         const available =
-            await PublicKeyCredential
-                .isUserVerifyingPlatformAuthenticatorAvailable();
+          await PublicKeyCredential
+          .isUserVerifyingPlatformAuthenticatorAvailable();
 
-        if (!available) {
+        if (available) {
 
-            formMessage.classList.add("error");
+          message.textContent =
+            "البصمة متاحة على جهازك. سيتم تفعيل تسجيل البصمة الحقيقي عند ربط الخادم الآمن.";
 
-            formMessage.textContent =
-                "لا توجد بصمة أو وسيلة تحقق بيومترية متاحة على هذا الجهاز.";
+        } else {
 
-            return;
+          message.textContent =
+            "لا توجد بصمة أو وسيلة تحقق حيوية متاحة.";
+
         }
 
-        formMessage.classList.add("success");
+      } catch (error) {
 
-        formMessage.textContent =
-            "البصمة متاحة على جهازك. سيتم ربط التحقق بالخادم عند إضافة قاعدة البيانات.";
+        message.textContent =
+          "تعذر التحقق من البصمة.";
 
-    } catch (error) {
+      }
 
-        formMessage.classList.add("error");
+    });
 
-        formMessage.textContent =
-            "تعذر تشغيل نظام البصمة.";
-
-        console.error(error);
-    }
-
-});
-
-
-// إرسال النموذج
-document.getElementById("voterForm").addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    formMessage.style.display = "block";
-    formMessage.className = "message success";
-
-    formMessage.textContent =
-        "تم إدخال البيانات بنجاح. الحفظ الفعلي يحتاج إلى قاعدة بيانات آمنة.";
-
-});
-
-</script>
+  </script>
 
 </body>
 </html>
