@@ -31,11 +31,14 @@
 
     .header h1 {
       color: #0d6efd;
-      margin-bottom: 5px;
+      margin: 5px 0;
+      font-size: 30px;
     }
 
     .header p {
       color: #666;
+      margin: 0;
+      font-size: 15px;
     }
 
     .card {
@@ -45,166 +48,37 @@
       box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     }
 
+    .field {
+      margin-bottom: 18px;
+    }
+
     label {
       display: block;
-      margin-top: 15px;
+      margin-bottom: 8px;
       font-weight: bold;
+      font-size: 16px;
     }
 
     input {
       width: 100%;
-      padding: 13px;
-      margin-top: 7px;
+      padding: 14px;
       border: 1px solid #ddd;
       border-radius: 10px;
       font-size: 16px;
+      background: #fafafa;
     }
 
     input:focus {
       outline: none;
       border-color: #0d6efd;
+      background: white;
+    }
+
+    input[type="file"] {
+      padding: 11px;
     }
 
     .save {
       width: 100%;
-      margin-top: 22px;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #0d6efd;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    .message {
-      text-align: center;
-      margin-top: 15px;
-      color: #555;
-    }
-
-    .fingerprint {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: none;
-      background: #0d6efd;
-      color: white;
-      font-size: 38px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.25);
-      z-index: 1000;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-
-    <div class="header">
-      <h1>الناخب</h1>
-      <p>تسجيل بيانات الناخب</p>
-    </div>
-
-    <div class="card">
-
-      <form id="voterForm">
-
-        <label>الاسم الكامل</label>
-        <input type="text" id="name" required>
-
-        <label>رقم الهاتف</label>
-        <input type="tel" id="phone" required>
-
-        <label>المحافظة</label>
-        <input type="text" id="governorate" required>
-
-        <label>القضاء</label>
-        <input type="text" id="district" required>
-
-        <label>مركز الاقتراع</label>
-        <input type="text" id="center" required>
-
-        <label>صورة بطاقة الناخب</label>
-        <input type="file" accept="image/*" capture="environment" required>
-
-        <label>صورة الهوية الشخصية</label>
-        <input type="file" accept="image/*" capture="environment" required>
-
-        <button class="save" type="submit">
-          حفظ البيانات
-        </button>
-
-      </form>
-
-      <div class="message" id="message"></div>
-
-    </div>
-  </div>
-
-  <button class="fingerprint" id="fingerprint" title="البصمة">
-    👆
-  </button>
-
-  <script>
-
-    const form = document.getElementById("voterForm");
-    const message = document.getElementById("message");
-    const fingerprint = document.getElementById("fingerprint");
-
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      message.textContent =
-        "تم إدخال البيانات. سيتم ربط الحفظ الآمن بالخادم لاحقًا.";
-    });
-
-    fingerprint.addEventListener("click", async function() {
-
-      if (!window.PublicKeyCredential) {
-        message.textContent =
-          "هذا الجهاز أو المتصفح لا يدعم البصمة.";
-        return;
-      }
-
-      if (!window.isSecureContext) {
-        message.textContent =
-          "البصمة تحتاج إلى اتصال HTTPS آمن.";
-        return;
-      }
-
-      try {
-
-        const available =
-          await PublicKeyCredential
-          .isUserVerifyingPlatformAuthenticatorAvailable();
-
-        if (available) {
-
-          message.textContent =
-            "البصمة متاحة على جهازك. سيتم تفعيل تسجيل البصمة الحقيقي عند ربط الخادم الآمن.";
-
-        } else {
-
-          message.textContent =
-            "لا توجد بصمة أو وسيلة تحقق حيوية متاحة.";
-
-        }
-
-      } catch (error) {
-
-        message.textContent =
-          "تعذر التحقق من البصمة.";
-
-      }
-
-    });
-
-  </script>
-
-</body>
-</html>
+      margin-top: 5px;
+      padding: 15
