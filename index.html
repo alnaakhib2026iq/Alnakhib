@@ -3,180 +3,458 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>الكابينة الانتخابية</title>
 
 <style>
 * {
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Tahoma, sans-serif;
 }
 
 body {
-    margin: 0;
+    background: linear-gradient(135deg, #0066cc, #00bcd4);
     min-height: 100vh;
-    background: linear-gradient(135deg, #172554, #2563eb, #06b6d4);
+    color: #222;
+}
+
+.app {
+    max-width: 480px;
+    margin: auto;
+    min-height: 100vh;
+    background: #f5f7fa;
+    position: relative;
+    padding-bottom: 75px;
+}
+
+/* صفحة الدخول */
+.login-page {
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 20px;
+    justify-content: center;
+    padding: 25px;
 }
 
-.container {
+.login-box {
     width: 100%;
-    max-width: 520px;
-    background: rgba(255,255,255,0.96);
-    border-radius: 25px;
-    padding: 28px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    background: white;
+    padding: 30px 22px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
 }
 
-.header {
-    text-align: center;
+.logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #0066cc, #00bcd4);
+    color: white;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.login-box h1 {
+    color: #0066cc;
+    margin-bottom: 8px;
+}
+
+.login-box p {
+    color: #777;
     margin-bottom: 25px;
 }
 
-.header .icon {
-    font-size: 55px;
+/* الحقول */
+.input-group {
+    margin-bottom: 15px;
+    text-align: right;
 }
 
-h1 {
-    margin: 8px 0;
-    color: #172554;
-    font-size: 28px;
-}
-
-.subtitle {
-    color: #64748b;
-    font-size: 14px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-label {
+.input-group label {
     display: block;
     margin-bottom: 7px;
     font-weight: bold;
-    color: #1e293b;
+    color: #333;
 }
 
-input {
+input, select {
     width: 100%;
     padding: 14px;
-    border: 2px solid #e2e8f0;
+    border: 1px solid #ddd;
     border-radius: 12px;
-    outline: none;
     font-size: 16px;
-    transition: 0.3s;
+    outline: none;
+    background: white;
 }
 
-input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+input:focus, select:focus {
+    border-color: #008ed6;
 }
 
-.photo-box {
-    border: 2px dashed #94a3b8;
-    border-radius: 15px;
-    padding: 18px;
-    text-align: center;
-    background: #f8fafc;
-}
-
-.photo-box input {
-    border: none;
-    padding: 5px;
-}
-
-button {
+/* الأزرار */
+.btn {
     width: 100%;
     border: none;
-    padding: 16px;
-    border-radius: 14px;
-    background: linear-gradient(90deg, #2563eb, #0891b2);
+    padding: 15px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0066cc, #00a8cc);
     color: white;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     cursor: pointer;
     margin-top: 8px;
 }
 
-button:hover {
-    opacity: 0.9;
+.btn:active {
+    transform: scale(0.98);
 }
 
-.footer {
+/* الصفحات */
+.page {
+    display: none;
+    padding: 20px;
+}
+
+.page.active {
+    display: block;
+}
+
+.header {
+    background: linear-gradient(135deg, #0066cc, #00bcd4);
+    color: white;
+    padding: 25px 20px;
+    border-radius: 0 0 25px 25px;
+    margin: -20px -20px 20px;
+}
+
+.header h2 {
+    margin-bottom: 7px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+    color: #0066cc;
+    margin-bottom: 10px;
+}
+
+.info-row {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+/* رفع الصور */
+.file-input {
+    padding: 10px;
+    background: #f5f5f5;
+}
+
+/* شريط التنقل */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: 65px;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -3px 15px rgba(0,0,0,0.12);
+    z-index: 100;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 13px;
+    cursor: pointer;
     text-align: center;
-    margin-top: 18px;
-    color: #64748b;
-    font-size: 12px;
+}
+
+.nav-btn span {
+    display: block;
+    font-size: 23px;
+    margin-bottom: 3px;
+}
+
+.nav-btn.active {
+    color: #0066cc;
+    font-weight: bold;
+}
+
+/* إخفاء التطبيق عند الدخول */
+#app {
+    display: none;
+}
+
+/* شاشة ترحيب */
+.welcome {
+    text-align: center;
+    padding: 20px 5px;
+}
+
+.welcome-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.welcome h2 {
+    color: #0066cc;
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    color: #666;
+    line-height: 1.8;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- صفحة تسجيل الدخول -->
+<div id="loginPage" class="login-page">
 
-    <div class="header">
-        <div class="icon">🗳️</div>
+    <div class="login-box">
+
+        <div class="logo">🗳️</div>
+
         <h1>الكابينة الانتخابية</h1>
-        <div class="subtitle">
-            معلومات الناخب
-        </div>
-    </div>
+        <p>تسجيل الدخول إلى النظام</p>
 
-    <form>
-
-        <div class="form-group">
-            <label>👤 اسم الناخب الكامل واللقب</label>
-            <input type="text" placeholder="أدخل الاسم الكامل واللقب">
+        <div class="input-group">
+            <label>رقم الهاتف</label>
+            <input type="tel" id="loginPhone" placeholder="أدخل رقم الهاتف">
         </div>
 
-        <div class="form-group">
-            <label>📍 المحافظة</label>
-            <input type="text" placeholder="أدخل المحافظة">
+        <div class="input-group">
+            <label>كلمة المرور</label>
+            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
         </div>
 
-        <div class="form-group">
-            <label>🏛️ القضاء</label>
-            <input type="text" placeholder="أدخل القضاء">
-        </div>
+        <button class="btn" onclick="login()">تسجيل الدخول</button>
 
-        <div class="form-group">
-            <label>📱 رقم الهاتف</label>
-            <input type="tel" placeholder="أدخل رقم الهاتف">
-        </div>
-
-        <div class="form-group">
-            <label>🪪 صورة بطاقة الناخب</label>
-
-            <div class="photo-box">
-                <input type="file" accept="image/*">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>🆔 صورة الهوية الشخصية</label>
-
-            <div class="photo-box">
-                <input type="file" accept="image/*">
-            </div>
-        </div>
-
-        <button type="button">
-            حفظ معلومات الناخب
-        </button>
-
-    </form>
-
-    <div class="footer">
-        نظام معلومات الناخب
     </div>
 
 </div>
 
+
+<!-- التطبيق -->
+<div id="app" class="app">
+
+    <!-- الصفحة الرئيسية -->
+    <div id="homePage" class="page active">
+
+        <div class="header">
+            <h2>مرحباً بك 👋</h2>
+            <p>الكابينة الانتخابية</p>
+        </div>
+
+        <div class="welcome">
+
+            <div class="welcome-icon">🗳️</div>
+
+            <h2>نظام معلومات الناخب</h2>
+
+            <p>
+                يمكنك من خلال هذا التطبيق إدخال
+                معلومات الناخب بطريقة سهلة ومنظمة.
+            </p>
+
+        </div>
+
+        <div class="card">
+            <h3>معلومات التطبيق</h3>
+            <p>
+                أضف بيانات الناخب ومعلومات المركز الانتخابي
+                من خلال صفحة المعلومات.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- صفحة معلومات الناخب -->
+    <div id="voterPage" class="page">
+
+        <div class="header">
+            <h2>معلومات الناخب</h2>
+            <p>أدخل المعلومات المطلوبة</p>
+        </div>
+
+        <div class="card">
+
+            <div class="input-group">
+                <label>الاسم الكامل</label>
+                <input type="text" id="fullName" placeholder="أدخل الاسم الكامل">
+            </div>
+
+            <div class="input-group">
+                <label>المحافظة</label>
+                <input type="text" id="governorate" placeholder="أدخل المحافظة">
+            </div>
+
+            <div class="input-group">
+                <label>القضاء</label>
+                <input type="text" id="district" placeholder="أدخل القضاء">
+            </div>
+
+            <div class="input-group">
+                <label>المركز الانتخابي</label>
+                <input type="text" id="electoralCenter" placeholder="أدخل المركز الانتخابي">
+            </div>
+
+            <div class="input-group">
+                <label>رقم الهاتف</label>
+                <input type="tel" id="phone" placeholder="أدخل رقم الهاتف">
+            </div>
+
+            <div class="input-group">
+                <label>صورة البطاقة الانتخابية</label>
+                <input class="file-input" type="file" accept="image/*">
+            </div>
+
+            <div class="input-group">
+                <label>صورة الهوية الشخصية</label>
+                <input class="file-input" type="file" accept="image/*">
+            </div>
+
+            <button class="btn" onclick="saveInfo()">
+                حفظ معلومات الناخب
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- صفحة الحساب -->
+    <div id="accountPage" class="page">
+
+        <div class="header">
+            <h2>الحساب</h2>
+            <p>إدارة حسابك</p>
+        </div>
+
+        <div class="card">
+
+            <div class="info-row">
+                <strong>الحالة:</strong>
+                <span> مسجل الدخول ✅</span>
+            </div>
+
+            <button class="btn" onclick="logout()">
+                تسجيل الخروج
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- شريط التنقل -->
+    <div class="bottom-nav">
+
+        <button class="nav-btn active" onclick="showPage('homePage', this)">
+            <span>🏠</span>
+            الرئيسية
+        </button>
+
+        <button class="nav-btn" onclick="showPage('voterPage', this)">
+            <span>👤</span>
+            المعلومات
+        </button>
+
+        <button class="nav-btn" onclick="showPage('accountPage', this)">
+            <span>⚙️</span>
+            الحساب
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function login() {
+
+    const phone = document.getElementById("loginPhone").value;
+    const password = document.getElementById("loginPassword").value;
+
+    if (phone === "" || password === "") {
+        alert("يرجى إدخال رقم الهاتف وكلمة المرور");
+        return;
+    }
+
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").style.display = "block";
+}
+
+
+function showPage(pageId, button) {
+
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(function(page) {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    const buttons = document.querySelectorAll(".nav-btn");
+
+    buttons.forEach(function(btn) {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+
+function saveInfo() {
+
+    const name = document.getElementById("fullName").value;
+
+    if (name === "") {
+        alert("يرجى إدخال الاسم الكامل");
+        return;
+    }
+
+    alert("تم حفظ المعلومات بنجاح ✅");
+}
+
+
+function logout() {
+
+    document.getElementById("app").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+
+    document.getElementById("loginPhone").value = "";
+    document.getElementById("loginPassword").value = "";
+}
+
+</script>
+
 </body>
-</html>
+    </html>
