@@ -6,241 +6,322 @@
 <title>الكابينة الانتخابية</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Tahoma, sans-serif;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Tahoma,Arial,sans-serif;
 }
 
-body {
-    background: linear-gradient(135deg, #0066cc, #00bcd4);
-    min-height: 100vh;
-    color: #222;
+body{
+    background:#eef3f8;
+    color:#172033;
 }
 
-.app {
-    max-width: 480px;
-    margin: auto;
-    min-height: 100vh;
-    background: #f5f7fa;
-    position: relative;
-    padding-bottom: 75px;
+.app{
+    max-width:480px;
+    min-height:100vh;
+    margin:auto;
+    background:#f7f9fc;
+    padding-bottom:80px;
 }
 
-/* صفحة الدخول */
-.login-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 25px;
+/* LOGIN */
+#loginPage{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:linear-gradient(145deg,#0757a8,#00a6c7);
 }
 
-.login-box {
-    width: 100%;
-    background: white;
-    padding: 30px 22px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    text-align: center;
+.login-box{
+    width:100%;
+    background:white;
+    padding:30px 22px;
+    border-radius:26px;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+    text-align:center;
 }
 
-.logo {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #0066cc, #00bcd4);
-    color: white;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    font-weight: bold;
+.logo{
+    width:82px;
+    height:82px;
+    margin:0 auto 18px;
+    border-radius:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(145deg,#0757a8,#00a6c7);
+    color:white;
+    font-size:38px;
 }
 
-.login-box h1 {
-    color: #0066cc;
-    margin-bottom: 8px;
+.login-box h1{
+    font-size:25px;
+    color:#0757a8;
+    margin-bottom:8px;
 }
 
-.login-box p {
-    color: #777;
-    margin-bottom: 25px;
+.login-box p{
+    color:#778196;
+    margin-bottom:25px;
 }
 
-/* الحقول */
-.input-group {
-    margin-bottom: 15px;
-    text-align: right;
+/* INPUTS */
+.input-group{
+    text-align:right;
+    margin-bottom:16px;
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: bold;
-    color: #333;
+.input-group label{
+    display:block;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:7px;
+    color:#30394b;
 }
 
-input, select {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    font-size: 16px;
-    outline: none;
-    background: white;
+input,select{
+    width:100%;
+    border:1px solid #dce3ec;
+    background:#fff;
+    border-radius:13px;
+    padding:14px;
+    font-size:16px;
+    outline:none;
 }
 
-input:focus, select:focus {
-    border-color: #008ed6;
+input:focus,select:focus{
+    border-color:#078fc0;
+    box-shadow:0 0 0 3px rgba(7,143,192,.1);
 }
 
-/* الأزرار */
-.btn {
-    width: 100%;
-    border: none;
-    padding: 15px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #0066cc, #00a8cc);
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 8px;
+.file-input{
+    background:#f3f6fa;
 }
 
-.btn:active {
-    transform: scale(0.98);
+/* BUTTON */
+.btn{
+    width:100%;
+    border:0;
+    border-radius:14px;
+    padding:15px;
+    background:linear-gradient(135deg,#0757a8,#00a6c7);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:7px;
 }
 
-/* الصفحات */
-.page {
-    display: none;
-    padding: 20px;
+.btn:active{
+    transform:scale(.98);
 }
 
-.page.active {
-    display: block;
+/* PAGES */
+.page{
+    display:none;
+    padding:18px;
 }
 
-.header {
-    background: linear-gradient(135deg, #0066cc, #00bcd4);
-    color: white;
-    padding: 25px 20px;
-    border-radius: 0 0 25px 25px;
-    margin: -20px -20px 20px;
+.page.active{
+    display:block;
 }
 
-.header h2 {
-    margin-bottom: 7px;
+/* HEADER */
+.top-header{
+    background:linear-gradient(135deg,#0757a8,#00a6c7);
+    color:white;
+    margin:-18px -18px 20px;
+    padding:25px 20px 28px;
+    border-radius:0 0 28px 28px;
 }
 
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+.top-header small{
+    opacity:.85;
 }
 
-.card h3 {
-    color: #0066cc;
-    margin-bottom: 10px;
+.top-header h2{
+    margin-top:7px;
+    font-size:24px;
 }
 
-.info-row {
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
+/* HOME */
+.section-title{
+    font-size:18px;
+    margin:20px 0 13px;
 }
 
-.info-row:last-child {
-    border-bottom: none;
+.dashboard{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px;
 }
 
-/* رفع الصور */
-.file-input {
-    padding: 10px;
-    background: #f5f5f5;
+.dashboard-card{
+    background:white;
+    border-radius:19px;
+    padding:20px 14px;
+    min-height:135px;
+    box-shadow:0 5px 18px rgba(27,53,87,.08);
+    cursor:pointer;
+    border:1px solid #edf1f5;
 }
 
-/* شريط التنقل */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 480px;
-    height: 65px;
-    background: white;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -3px 15px rgba(0,0,0,0.12);
-    z-index: 100;
+.dashboard-card:active{
+    transform:scale(.97);
 }
 
-.nav-btn {
-    background: none;
-    border: none;
-    color: #777;
-    font-size: 13px;
-    cursor: pointer;
-    text-align: center;
+.card-icon{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e9f5fb;
+    font-size:25px;
+    margin-bottom:13px;
 }
 
-.nav-btn span {
-    display: block;
-    font-size: 23px;
-    margin-bottom: 3px;
+.dashboard-card h3{
+    font-size:15px;
+    margin-bottom:6px;
 }
 
-.nav-btn.active {
-    color: #0066cc;
-    font-weight: bold;
+.dashboard-card p{
+    font-size:12px;
+    color:#7a8494;
+    line-height:1.6;
 }
 
-/* إخفاء التطبيق عند الدخول */
-#app {
-    display: none;
+/* INFO CARD */
+.info-card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    margin-top:15px;
+    box-shadow:0 5px 18px rgba(27,53,87,.07);
 }
 
-/* شاشة ترحيب */
-.welcome {
-    text-align: center;
-    padding: 20px 5px;
+.info-card h3{
+    color:#0757a8;
+    margin-bottom:10px;
 }
 
-.welcome-icon {
-    font-size: 60px;
-    margin-bottom: 15px;
+.info-card p{
+    color:#697386;
+    line-height:1.8;
+    font-size:14px;
 }
 
-.welcome h2 {
-    color: #0066cc;
-    margin-bottom: 10px;
+/* FORMS */
+.form-card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 5px 18px rgba(27,53,87,.07);
 }
 
-.welcome p {
-    color: #666;
-    line-height: 1.8;
+/* SEARCH */
+.search-box{
+    background:white;
+    border-radius:18px;
+    padding:15px;
+    box-shadow:0 5px 18px rgba(27,53,87,.07);
+}
+
+.search-result{
+    margin-top:15px;
+    background:white;
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+    color:#687386;
+}
+
+/* ACCOUNT */
+.account-card{
+    background:white;
+    border-radius:20px;
+    padding:22px;
+    box-shadow:0 5px 18px rgba(27,53,87,.07);
+}
+
+.account-icon{
+    width:75px;
+    height:75px;
+    margin:0 auto 15px;
+    border-radius:50%;
+    background:#e9f5fb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:35px;
+}
+
+.account-card h3{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    height:72px;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    box-shadow:0 -5px 20px rgba(0,0,0,.1);
+    z-index:100;
+}
+
+.nav-btn{
+    border:0;
+    background:none;
+    color:#8993a3;
+    font-size:11px;
+    cursor:pointer;
+    min-width:65px;
+}
+
+.nav-btn span{
+    display:block;
+    font-size:23px;
+    margin-bottom:4px;
+}
+
+.nav-btn.active{
+    color:#0757a8;
+    font-weight:bold;
+}
+
+.hidden{
+    display:none!important;
 }
 </style>
 </head>
 
 <body>
 
-<!-- صفحة تسجيل الدخول -->
-<div id="loginPage" class="login-page">
+<!-- LOGIN -->
+<div id="loginPage">
 
     <div class="login-box">
 
         <div class="logo">🗳️</div>
 
         <h1>الكابينة الانتخابية</h1>
-        <p>تسجيل الدخول إلى النظام</p>
+
+        <p>مرحباً بك في نظام معلومات الناخب</p>
 
         <div class="input-group">
             <label>رقم الهاتف</label>
@@ -259,74 +340,91 @@ input:focus, select:focus {
 </div>
 
 
-<!-- التطبيق -->
-<div id="app" class="app">
+<!-- APP -->
+<div id="app" class="app hidden">
 
-    <!-- الصفحة الرئيسية -->
+    <!-- HOME -->
     <div id="homePage" class="page active">
 
-        <div class="header">
+        <div class="top-header">
+            <small>الكابينة الانتخابية</small>
             <h2>مرحباً بك 👋</h2>
-            <p>الكابينة الانتخابية</p>
         </div>
 
-        <div class="welcome">
+        <h3 class="section-title">الخدمات الرئيسية</h3>
 
-            <div class="welcome-icon">🗳️</div>
+        <div class="dashboard">
 
-            <h2>نظام معلومات الناخب</h2>
+            <div class="dashboard-card" onclick="openPage('voterPage')">
+                <div class="card-icon">👤</div>
+                <h3>إضافة ناخب</h3>
+                <p>إدخال معلومات الناخب وإضافة البيانات.</p>
+            </div>
 
-            <p>
-                يمكنك من خلال هذا التطبيق إدخال
-                معلومات الناخب بطريقة سهلة ومنظمة.
-            </p>
+            <div class="dashboard-card" onclick="openPage('searchPage')">
+                <div class="card-icon">🔍</div>
+                <h3>البحث عن ناخب</h3>
+                <p>البحث عن معلومات الناخب.</p>
+            </div>
+
+            <div class="dashboard-card" onclick="openPage('centerPage')">
+                <div class="card-icon">📍</div>
+                <h3>المراكز الانتخابية</h3>
+                <p>معلومات المراكز الانتخابية.</p>
+            </div>
+
+            <div class="dashboard-card" onclick="openPage('listPage')">
+                <div class="card-icon">👥</div>
+                <h3>قائمة الناخبين</h3>
+                <p>عرض قائمة الناخبين المسجلين.</p>
+            </div>
 
         </div>
 
-        <div class="card">
-            <h3>معلومات التطبيق</h3>
+        <div class="info-card">
+            <h3>نظام معلومات الناخب</h3>
             <p>
-                أضف بيانات الناخب ومعلومات المركز الانتخابي
-                من خلال صفحة المعلومات.
+                نظام منظم لإدارة معلومات الناخبين
+                والوصول إليها بطريقة سهلة وسريعة.
             </p>
         </div>
 
     </div>
 
 
-    <!-- صفحة معلومات الناخب -->
+    <!-- VOTER -->
     <div id="voterPage" class="page">
 
-        <div class="header">
-            <h2>معلومات الناخب</h2>
-            <p>أدخل المعلومات المطلوبة</p>
+        <div class="top-header">
+            <small>الكابينة الانتخابية</small>
+            <h2>إضافة ناخب</h2>
         </div>
 
-        <div class="card">
+        <div class="form-card">
 
             <div class="input-group">
                 <label>الاسم الكامل</label>
-                <input type="text" id="fullName" placeholder="أدخل الاسم الكامل">
+                <input id="fullName" type="text" placeholder="أدخل الاسم الكامل">
             </div>
 
             <div class="input-group">
                 <label>المحافظة</label>
-                <input type="text" id="governorate" placeholder="أدخل المحافظة">
+                <input id="governorate" type="text" placeholder="أدخل المحافظة">
             </div>
 
             <div class="input-group">
                 <label>القضاء</label>
-                <input type="text" id="district" placeholder="أدخل القضاء">
+                <input id="district" type="text" placeholder="أدخل القضاء">
             </div>
 
             <div class="input-group">
                 <label>المركز الانتخابي</label>
-                <input type="text" id="electoralCenter" placeholder="أدخل المركز الانتخابي">
+                <input id="electoralCenter" type="text" placeholder="أدخل المركز الانتخابي">
             </div>
 
             <div class="input-group">
                 <label>رقم الهاتف</label>
-                <input type="tel" id="phone" placeholder="أدخل رقم الهاتف">
+                <input id="phone" type="tel" placeholder="أدخل رقم الهاتف">
             </div>
 
             <div class="input-group">
@@ -348,20 +446,85 @@ input:focus, select:focus {
     </div>
 
 
-    <!-- صفحة الحساب -->
-    <div id="accountPage" class="page">
+    <!-- SEARCH -->
+    <div id="searchPage" class="page">
 
-        <div class="header">
-            <h2>الحساب</h2>
-            <p>إدارة حسابك</p>
+        <div class="top-header">
+            <small>الكابينة الانتخابية</small>
+            <h2>البحث عن ناخب</h2>
         </div>
 
-        <div class="card">
+        <div class="search-box">
 
-            <div class="info-row">
-                <strong>الحالة:</strong>
-                <span> مسجل الدخول ✅</span>
+            <div class="input-group">
+                <label>ابحث بالاسم أو رقم الهاتف</label>
+                <input type="text" placeholder="اكتب هنا للبحث">
             </div>
+
+            <button class="btn" onclick="searchVoter()">
+                🔍 بحث
+            </button>
+
+        </div>
+
+        <div id="searchResult" class="search-result">
+            لا توجد نتائج للعرض حالياً
+        </div>
+
+    </div>
+
+
+    <!-- CENTERS -->
+    <div id="centerPage" class="page">
+
+        <div class="top-header">
+            <small>الكابينة الانتخابية</small>
+            <h2>المراكز الانتخابية</h2>
+        </div>
+
+        <div class="info-card">
+            <h3>📍 المراكز الانتخابية</h3>
+            <p>
+                سيتم إضافة بيانات المراكز الانتخابية
+                وربطها بالمحافظة والقضاء لاحقاً.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- LIST -->
+    <div id="listPage" class="page">
+
+        <div class="top-header">
+            <small>الكابينة الانتخابية</small>
+            <h2>قائمة الناخبين</h2>
+        </div>
+
+        <div class="info-card">
+            <h3>👥 قائمة الناخبين</h3>
+            <p>
+                ستظهر هنا قائمة الناخبين بعد ربط التطبيق
+                بقاعدة بيانات آمنة.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- ACCOUNT -->
+    <div id="accountPage" class="page">
+
+        <div class="top-header">
+            <small>الكابينة الانتخابية</small>
+            <h2>الحساب</h2>
+        </div>
+
+        <div class="account-card">
+
+            <div class="account-icon">👤</div>
+
+            <h3>حساب المستخدم</h3>
 
             <button class="btn" onclick="logout()">
                 تسجيل الخروج
@@ -372,20 +535,25 @@ input:focus, select:focus {
     </div>
 
 
-    <!-- شريط التنقل -->
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
 
-        <button class="nav-btn active" onclick="showPage('homePage', this)">
+        <button class="nav-btn active" onclick="showPage('homePage',this)">
             <span>🏠</span>
             الرئيسية
         </button>
 
-        <button class="nav-btn" onclick="showPage('voterPage', this)">
-            <span>👤</span>
-            المعلومات
+        <button class="nav-btn" onclick="showPage('listPage',this)">
+            <span>👥</span>
+            الناخبون
         </button>
 
-        <button class="nav-btn" onclick="showPage('accountPage', this)">
+        <button class="nav-btn" onclick="showPage('voterPage',this)">
+            <span>➕</span>
+            إضافة
+        </button>
+
+        <button class="nav-btn" onclick="showPage('accountPage',this)">
             <span>⚙️</span>
             الحساب
         </button>
@@ -397,47 +565,99 @@ input:focus, select:focus {
 
 <script>
 
-function login() {
+function login(){
 
-    const phone = document.getElementById("loginPhone").value;
-    const password = document.getElementById("loginPassword").value;
+    const phone =
+        document.getElementById("loginPhone").value.trim();
 
-    if (phone === "" || password === "") {
+    const password =
+        document.getElementById("loginPassword").value.trim();
+
+    if(phone === "" || password === ""){
         alert("يرجى إدخال رقم الهاتف وكلمة المرور");
         return;
     }
 
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("app").style.display = "block";
+    document.getElementById("loginPage").style.display="none";
+    document.getElementById("app").classList.remove("hidden");
 }
 
 
-function showPage(pageId, button) {
+function showPage(pageId,button){
 
-    const pages = document.querySelectorAll(".page");
-
-    pages.forEach(function(page) {
+    document.querySelectorAll(".page").forEach(function(page){
         page.classList.remove("active");
     });
 
     document.getElementById(pageId).classList.add("active");
 
-    const buttons = document.querySelectorAll(".nav-btn");
-
-    buttons.forEach(function(btn) {
+    document.querySelectorAll(".nav-btn").forEach(function(btn){
         btn.classList.remove("active");
     });
 
-    button.classList.add("active");
+    if(button){
+        button.classList.add("active");
+    }
+
+    window.scrollTo(0,0);
 }
 
 
-function saveInfo() {
+function openPage(pageId){
 
-    const name = document.getElementById("fullName").value;
+    document.querySelectorAll(".page").forEach(function(page){
+        page.classList.remove("active");
+    });
 
-    if (name === "") {
+    document.getElementById(pageId).classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(function(btn){
+        btn.classList.remove("active");
+    });
+
+    window.scrollTo(0,0);
+}
+
+
+function saveInfo(){
+
+    const name =
+        document.getElementById("fullName").value.trim();
+
+    const governorate =
+        document.getElementById("governorate").value.trim();
+
+    const district =
+        document.getElementById("district").value.trim();
+
+    const center =
+        document.getElementById("electoralCenter").value.trim();
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    if(name === ""){
         alert("يرجى إدخال الاسم الكامل");
+        return;
+    }
+
+    if(governorate === ""){
+        alert("يرجى إدخال المحافظة");
+        return;
+    }
+
+    if(district === ""){
+        alert("يرجى إدخال القضاء");
+        return;
+    }
+
+    if(center === ""){
+        alert("يرجى إدخال المركز الانتخابي");
+        return;
+    }
+
+    if(phone === ""){
+        alert("يرجى إدخال رقم الهاتف");
         return;
     }
 
@@ -445,16 +665,24 @@ function saveInfo() {
 }
 
 
-function logout() {
+function searchVoter(){
 
-    document.getElementById("app").style.display = "none";
-    document.getElementById("loginPage").style.display = "flex";
+    document.getElementById("searchResult").innerHTML =
+        "🔎 سيتم تفعيل البحث الحقيقي بعد ربط التطبيق بقاعدة البيانات.";
+}
 
-    document.getElementById("loginPhone").value = "";
-    document.getElementById("loginPassword").value = "";
+
+function logout(){
+
+    document.getElementById("app").classList.add("hidden");
+
+    document.getElementById("loginPage").style.display="flex";
+
+    document.getElementById("loginPhone").value="";
+    document.getElementById("loginPassword").value="";
 }
 
 </script>
 
 </body>
-    </html>
+</html>
