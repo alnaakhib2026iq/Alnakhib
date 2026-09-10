@@ -21,31 +21,13 @@
     .container {
       max-width: 600px;
       margin: auto;
-      padding: 20px 15px 110px;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .header h1 {
-      color: #0d6efd;
-      margin: 5px 0;
-      font-size: 30px;
-    }
-
-    .header p {
-      color: #666;
-      margin: 0;
-      font-size: 15px;
-    }
-
-    .card {
-      background: white;
       padding: 20px;
-      border-radius: 18px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #0d6efd;
+      margin-bottom: 25px;
     }
 
     .field {
@@ -54,6 +36,81 @@
 
     label {
       display: block;
-      margin-bottom: 8px;
       font-weight: bold;
-      font-s
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      background: #0d6efd;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0b5ed7;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>الناخب</h1>
+
+    <div class="field">
+      <label>1. الاسم الكامل</label>
+      <input type="text" placeholder="أدخل الاسم الكامل">
+    </div>
+
+    <div class="field">
+      <label>2. المحافظة</label>
+      <input type="text" placeholder="أدخل المحافظة">
+    </div>
+
+    <div class="field">
+      <label>3. القضاء</label>
+      <input type="text" placeholder="أدخل القضاء">
+    </div>
+
+    <div class="field">
+      <label>4. المركز الانتخابي</label>
+      <input type="text" placeholder="أدخل المركز الانتخابي">
+    </div>
+
+    <div class="field">
+      <label>5. صورة بطاقة الناخب</label>
+      <input type="file" accept="image/*">
+    </div>
+
+    <div class="field">
+      <label>6. صورة الهوية الشخصية</label>
+      <input type="file" accept="image/*">
+    </div>
+
+    <button type="button">حفظ البيانات</button>
+
+  </div>
+
+</body>
+</html>
