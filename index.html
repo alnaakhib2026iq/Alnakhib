@@ -124,7 +124,28 @@
 const fingerprintBtn = document.getElementById("fingerprintBtn");
 const fingerprintStatus = document.getElementById("fingerprintStatus");
 
- {fingerprintBtn.addEventListener("click", async () => {
+ const BiometricAuth = Capacitor.registerPlugin('BiometricAuth');
+
+fingerprintBtn.addEventListener("click", async () => {
+  try {
+    const result = await BiometricAuth.authenticate({
+      reason: "التحقق من هوية المستخدم",
+      allowDeviceCredential: false,
+      androidTitle: "التحقق بالبصمة",
+      androidSubtitle: "ضع إصبعك على مستشعر البصمة",
+      androidConfirmationRequired: true
+    });
+
+    if (result) {
+      fingerprintStatus.textContent =
+        "✅ تم التحقق بالبصمة بنجاح";
+    }
+  } catch (error) {
+    fingerprintStatus.textContent =
+      "❌ لم يتم التحقق بالبصمة";
+    console.error(error);
+  }
+});
   try {
     const { BiometricAuth } = Capacitor.Plugins;
 
