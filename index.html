@@ -120,6 +120,53 @@
 <button type="button" id="saveBtn">حفظ البيانات</button>
 
   </div>
+<script>
+const fingerprintBtn = document.getElementById("fingerprintBtn");
+const fingerprintStatus = document.getElementById("fingerprintStatus");
 
+fingerprintBtn.addEventListener("click", async () => {
+  if (!window.PublicKeyCredential) {
+    fingerprintStatus.textContent =
+      "هذا الجهاز أو المتصفح لا يدعم تسجيل البصمة.";
+    return;
+  }
+
+  try {
+    const credential = await navigator.credentials.create({
+      publicKey: {
+        challenge: crypto.getRandomValues(new Uint8Array(32)),
+        rp: {
+          name: "الناخب"
+        },
+        user: {
+          id: crypto.getRandomValues(new Uint8Array(16)),
+          name: "voter",
+          displayName: "مستخدم الناخب"
+        },
+        pubKeyCredParams: [
+          {
+            type: "public-key",
+            alg: -7
+          }
+        ],
+        authenticatorSelection: {
+          authenticatorAttachment: "platform",
+          userVerification: "required"
+        },
+        timeout: 60000,
+        attestation: "none"
+      }
+    });
+
+    if (credential) {
+      fingerprintStatus.textContent =
+        "✅ تم تسجيل البصمة بنجاح";
+    }
+  } catch (error) {
+    fingerprintStatus.textContent =
+      "❌ لم يتم تسجيل البصمة.";
+  }
+});
+          </script>
 </body>
 </html>
