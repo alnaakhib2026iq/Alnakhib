@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0d6efd">
+
   <title>الناخب</title>
 
   <style>
@@ -20,13 +21,21 @@
 
     .container {
       max-width: 600px;
-      margin: auto;
+      margin: 0 auto;
       padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     }
 
     h1 {
       text-align: center;
       color: #0d6efd;
+      margin-top: 0;
       margin-bottom: 25px;
     }
 
@@ -42,11 +51,11 @@
 
     input {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 16px;
-      background: white;
+      background: #fff;
     }
 
     input[type="file"] {
@@ -55,25 +64,56 @@
 
     button {
       width: 100%;
-      padding: 15px;
       border: none;
-      border-radius: 8px;
-      background: #0d6efd;
-      color: white;
-      font-size: 18px;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 17px;
       font-weight: bold;
       cursor: pointer;
       margin-top: 8px;
     }
 
-    button:hover {
-      background: #0b5ed7;
+    #fingerprintBtn {
+      background: #198754;
+      color: white;
+    }
+
+    #saveBtn {
+      background: #0d6efd;
+      color: white;
+      margin-top: 15px;
     }
 
     #fingerprintStatus {
       text-align: center;
-      margin-top: 15px;
+      margin-top: 14px;
       font-weight: bold;
+      line-height: 1.7;
+    }
+
+    .location-box {
+      background: #f1f8ff;
+      border: 1px solid #b8daff;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success {
+      color: #198754;
+    }
+
+    .error {
+      color: #dc3545;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 18px;
+      color: #777;
+      font-size: 13px;
     }
   </style>
 </head>
@@ -82,124 +122,289 @@
 
   <div class="container">
 
-    <h1>الناخب</h1>
+    <div class="card">
 
-    <div class="field">
-      <label>1. الاسم الكامل</label>
-      <input type="text" placeholder="أدخل الاسم الكامل">
+      <h1>الناخب</h1>
+
+      <div class="field">
+        <label>1. الاسم الكامل</label>
+        <input type="text" id="fullName" placeholder="أدخل الاسم الكامل">
+      </div>
+
+      <div class="field">
+        <label>2. رقم الهاتف</label>
+        <input type="tel" id="phone" placeholder="أدخل رقم الهاتف">
+      </div>
+
+      <div class="field">
+        <label>3. المحافظة</label>
+        <input type="text" id="province" placeholder="أدخل المحافظة">
+      </div>
+
+      <div class="field">
+        <label>4. القضاء</label>
+        <input type="text" id="district" placeholder="أدخل القضاء">
+      </div>
+
+      <div class="field">
+        <label>5. المركز الانتخابي</label>
+        <input type="text" id="center" placeholder="أدخل المركز الانتخابي">
+      </div>
+
+      <div class="field">
+        <label>6. صورة بطاقة الناخب</label>
+        <input type="file" id="voterCard" accept="image/*">
+      </div>
+
+      <div class="field">
+        <label>7. صورة الهوية الشخصية</label>
+        <input type="file" id="personalId" accept="image/*">
+      </div>
+
+      <button id="fingerprintBtn">
+        🔐 التحقق البيومتري
+      </button>
+
+      <div id="fingerprintStatus"></div>
+
+      <div id="locationBox" class="location-box">
+        📍 تم تحديد موقع الجهاز
+        <br>
+        <span id="locationText"></span>
+      </div>
+
+      <button id="saveBtn">
+        💾 حفظ البيانات
+      </button>
+
     </div>
 
-    <div class="field">
-      <label>2. رقم الهاتف</label>
-      <input type="tel" placeholder="أدخل رقم الهاتف">
+    <div class="footer">
+      تطبيق الناخب
     </div>
-
-    <div class="field">
-      <label>3. المحافظة</label>
-      <input type="text" placeholder="أدخل المحافظة">
-    </div>
-
-    <div class="field">
-      <label>4. القضاء</label>
-      <input type="text" placeholder="أدخل القضاء">
-    </div>
-
-    <div class="field">
-      <label>5. المركز الانتخابي</label>
-      <input type="text" placeholder="أدخل المركز الانتخابي">
-    </div>
-
-    <div class="field">
-      <label>6. صورة بطاقة الناخب</label>
-      <input type="file" accept="image/*">
-    </div>
-
-    <div class="field">
-      <label>7. صورة الهوية الشخصية</label>
-      <input type="file" accept="image/*">
-    </div>
-
-    <button type="button" id="fingerprintBtn">
-      🔐 التحقق البيومتري
-    </button>
-
-    <p id="fingerprintStatus"></p>
-
-    <button type="button" id="saveBtn">
-      حفظ البيانات
-    </button>
 
   </div>
 
   <script>
+
     const fingerprintBtn =
       document.getElementById("fingerprintBtn");
 
     const fingerprintStatus =
       document.getElementById("fingerprintStatus");
 
-    fingerprintBtn.addEventListener("click", async () => {
+    const locationBox =
+      document.getElementById("locationBox");
 
-      if (!window.PublicKeyCredential) {
+    const locationText =
+      document.getElementById("locationText");
+
+    const saveBtn =
+      document.getElementById("saveBtn");
+
+    let currentLocation = null;
+    let verificationTime = null;
+
+
+    /*
+      زر التحقق البيومتري
+
+      هذا الزر لا يستخدم مستشعر البصمة.
+      عند الضغط عليه يتم فتح خدمة تحديد الموقع GPS.
+    */
+
+    fingerprintBtn.addEventListener("click", function () {
+
+      fingerprintStatus.className = "";
+      fingerprintStatus.textContent =
+        "📍 جارٍ فتح تحديد موقع الجهاز...";
+
+      locationBox.style.display = "none";
+
+
+      if (!navigator.geolocation) {
+
         fingerprintStatus.textContent =
-          "هذا الجهاز لا يدعم التحقق البيومتري عبر المتصفح.";
+          "❌ تحديد الموقع غير متاح على هذا الجهاز.";
+
+        fingerprintStatus.className = "error";
+
         return;
       }
 
-      try {
 
-        const credential =
-          await navigator.credentials.create({
-            publicKey: {
-              challenge:
-                crypto.getRandomValues(
-                  new Uint8Array(32)
-                ),
+      navigator.geolocation.getCurrentPosition(
 
-              rp: {
-                name: "الناخب"
-              },
+        function (position) {
 
-              user: {
-                id:
-                  crypto.getRandomValues(
-                    new Uint8Array(16)
-                  ),
-                name: "voter",
-                displayName: "مستخدم الناخب"
-              },
+          currentLocation = {
 
-              pubKeyCredParams: [
-                {
-                  type: "public-key",
-                  alg: -7
-                }
-              ],
+            latitude: position.coords.latitude,
 
-              authenticatorSelection: {
-                authenticatorAttachment: "platform",
-                userVerification: "required"
-              },
+            longitude: position.coords.longitude,
 
-              timeout: 60000,
+            accuracy: position.coords.accuracy
 
-              attestation: "none"
-            }
-          });
+          };
 
-        if (credential) {
+
+          verificationTime =
+            new Date().toISOString();
+
+
           fingerprintStatus.textContent =
-            "✅ تم التحقق البيومتري بنجاح";
+            "✅ تم التحقق وتحديد الموقع بنجاح";
+
+          fingerprintStatus.className =
+            "success";
+
+
+          locationBox.style.display =
+            "block";
+
+
+          locationText.textContent =
+            "تم تحديد الموقع بنجاح";
+
+
+          fingerprintBtn.textContent =
+            "✅ تم التحقق";
+
+
+        },
+
+
+        function (error) {
+
+          fingerprintStatus.className =
+            "error";
+
+
+          if (error.code === 1) {
+
+            fingerprintStatus.textContent =
+              "❌ تم رفض إذن الموقع. اسمح للتطبيق باستخدام الموقع.";
+
+          }
+
+          else if (error.code === 2) {
+
+            fingerprintStatus.textContent =
+              "❌ تعذر تحديد موقع الجهاز.";
+
+          }
+
+          else if (error.code === 3) {
+
+            fingerprintStatus.textContent =
+              "❌ انتهت مهلة تحديد الموقع.";
+
+          }
+
+          else {
+
+            fingerprintStatus.textContent =
+              "❌ حدث خطأ أثناء تحديد الموقع.";
+
+          }
+
+        },
+
+
+        {
+
+          enableHighAccuracy: true,
+
+          timeout: 30000,
+
+          maximumAge: 0
+
         }
 
-      } catch (error) {
+      );
 
-        fingerprintStatus.textContent =
-          "❌ فشل التحقق البيومتري";
-
-        console.error(error);
-      }
     });
+
+
+    /*
+      حفظ البيانات
+    */
+
+    saveBtn.addEventListener("click", function () {
+
+      const fullName =
+        document.getElementById("fullName").value.trim();
+
+      const phone =
+        document.getElementById("phone").value.trim();
+
+      const province =
+        document.getElementById("province").value.trim();
+
+      const district =
+        document.getElementById("district").value.trim();
+
+      const center =
+        document.getElementById("center").value.trim();
+
+
+      if (
+        !fullName ||
+        !phone ||
+        !province ||
+        !district ||
+        !center
+      ) {
+
+        alert(
+          "يرجى إكمال جميع البيانات المطلوبة."
+        );
+
+        return;
+      }
+
+
+      if (!currentLocation) {
+
+        alert(
+          "يرجى الضغط على زر التحقق البيومتري وتحديد الموقع أولاً."
+        );
+
+        return;
+      }
+
+
+      const voterData = {
+
+        fullName: fullName,
+
+        phone: phone,
+
+        province: province,
+
+        district: district,
+
+        electoralCenter: center,
+
+        location: currentLocation,
+
+        verificationTime: verificationTime
+
+      };
+
+
+      localStorage.setItem(
+        "voterData",
+        JSON.stringify(voterData)
+      );
+
+
+      alert(
+        "✅ تم حفظ البيانات بنجاح."
+      );
+
+    });
+
   </script>
 
 </body>
