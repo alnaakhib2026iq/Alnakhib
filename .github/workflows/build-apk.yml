@@ -8,36 +8,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: تحميل المشروع
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: إعداد Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install Capacitor
+      - name: تثبيت Capacitor
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Add Android
+      - name: إنشاء مشروع Android
         run: npx cap add android
 
-      - name: Sync
+      - name: مزامنة التطبيق
         run: npx cap sync android
 
-      - name: Setup Java
+      - name: إعداد Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Build APK
+      - name: بناء APK
         working-directory: android
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: حفظ APK
         uses: actions/upload-artifact@v4
         with:
           name: alnaakhib-apk
