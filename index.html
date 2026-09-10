@@ -124,7 +124,32 @@
 const fingerprintBtn = document.getElementById("fingerprintBtn");
 const fingerprintStatus = document.getElementById("fingerprintStatus");
 
-fingerprintBtn.addEventListener("click", async () => {
+ {fingerprintBtn.addEventListener("click", async () => {
+  try {
+    const { BiometricAuth } = Capacitor.Plugins;
+
+    const result = await BiometricAuth.authenticate({
+      reason: "التحقق من هوية المستخدم",
+      title: "التحقق البيومتري",
+      subtitle: "استخدم بصمة إصبعك",
+      description: "ضع إصبعك على مستشعر البصمة",
+      negativeButtonText: "إلغاء"
+    });
+
+    if (result.verified) {
+      fingerprintStatus.textContent =
+        "✅ تم التحقق بالبصمة بنجاح";
+    } else {
+      fingerprintStatus.textContent =
+        "❌ لم يتم التحقق";
+    }
+
+  } catch (error) {
+    fingerprintStatus.textContent =
+      "❌ فشل التحقق بالبصمة";
+    console.error(error);
+  }
+});
   if (!window.PublicKeyCredential) {
     fingerprintStatus.textContent =
       "هذا الجهاز أو المتصفح لا يدعم تسجيل البصمة.";
