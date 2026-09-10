@@ -238,7 +238,44 @@
 
     let currentLocation = null;
     let verificationTime = null;
+fingerprintBtn.addEventListener("click", () => {
+  fingerprintStatus.textContent = "📍 جارٍ تحديد موقع الجهاز...";
 
+  if (!navigator.geolocation) {
+    fingerprintStatus.textContent =
+      "❌ جهازك لا يدعم تحديد الموقع.";
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      currentLocation = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        accuracy: position.coords.accuracy
+      };
+
+      verificationTime = new Date().toISOString();
+
+      fingerprintStatus.textContent =
+        "✅ تم التحقق وتحديد الموقع بنجاح";
+
+      locationBox.style.display = "block";
+
+      locationText.textContent =
+        "تم تحديد الموقع بنجاح";
+    },
+    () => {
+      fingerprintStatus.textContent =
+        "❌ تعذر تحديد موقع الجهاز. فعّل GPS واسمح للتطبيق باستخدام الموقع.";
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 0
+    }
+  );
+});
     /*
       زر التحقق البيومتري
       يقوم بطلب تحديد موقع GPS بدون
