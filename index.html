@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <meta name="theme-color" content="#0d6efd">
 
   <title>الناخب</title>
@@ -27,7 +26,7 @@
     }
 
     .card {
-      background: white;
+      background: #fff;
       border-radius: 16px;
       padding: 22px;
       box-shadow: 0 4px 18px rgba(0,0,0,0.08);
@@ -36,8 +35,7 @@
     h1 {
       text-align: center;
       color: #0d6efd;
-      margin-top: 0;
-      margin-bottom: 25px;
+      margin: 0 0 25px;
     }
 
     .field {
@@ -50,8 +48,7 @@
       margin-bottom: 8px;
     }
 
-    input,
-    select {
+    input {
       width: 100%;
       padding: 13px;
       border: 1px solid #ccc;
@@ -75,7 +72,7 @@
       margin-top: 8px;
     }
 
-    #fingerprintBtn {
+    #locationBtn {
       background: #198754;
       color: white;
     }
@@ -86,11 +83,16 @@
       margin-top: 15px;
     }
 
+    #saveBtn:disabled {
+      background: #9bbce8;
+      cursor: not-allowed;
+    }
+
     button:active {
       transform: scale(0.99);
     }
 
-    #fingerprintStatus {
+    #status {
       text-align: center;
       margin-top: 14px;
       font-weight: bold;
@@ -126,282 +128,298 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="card">
+  <div class="card">
 
-      <h1>الناخب</h1>
+    <h1>الناخب</h1>
 
-      <div class="field">
-        <label for="fullName">1. الاسم الكامل</label>
-        <input
-          type="text"
-          id="fullName"
-          placeholder="أدخل الاسم الكامل"
-        >
-      </div>
-
-      <div class="field">
-        <label for="phone">2. رقم الهاتف</label>
-        <input
-          type="tel"
-          id="phone"
-          placeholder="أدخل رقم الهاتف"
-        >
-      </div>
-
-      <div class="field">
-        <label for="province">3. المحافظة</label>
-        <input
-          type="text"
-          id="province"
-          placeholder="أدخل المحافظة"
-        >
-      </div>
-
-      <div class="field">
-        <label for="district">4. القضاء</label>
-        <input
-          type="text"
-          id="district"
-          placeholder="أدخل القضاء"
-        >
-      </div>
-
-      <div class="field">
-        <label for="center">5. المركز الانتخابي</label>
-        <input
-          type="text"
-          id="center"
-          placeholder="أدخل المركز الانتخابي"
-        >
-      </div>
-
-      <div class="field">
-        <label for="voterCard">6. صورة بطاقة الناخب</label>
-        <input
-          type="file"
-          id="voterCard"
-          accept="image/*"
-          capture="environment"
-        >
-      </div>
-
-      <div class="field">
-        <label for="personalId">7. صورة الهوية الشخصية</label>
-        <input
-          type="file"
-          id="personalId"
-          accept="image/*"
-          capture="environment"
-        >
-      </div>
-
-      <button id="fingerprintBtn" type="button">
-        🔐 التحقق البيومتري
-      </button>
-
-      <div id="fingerprintStatus"></div>
-
-      <div id="locationBox" class="location-box">
-        📍 تم تحديد موقع الجهاز.
-        <br>
-        <span id="locationText"></span>
-      </div>
-
-      <button id="saveBtn" type="button">
-        💾 حفظ البيانات
-      </button>
-
+    <div class="field">
+      <label for="fullName">1. الاسم الكامل</label>
+      <input
+        type="text"
+        id="fullName"
+        placeholder="أدخل الاسم الكامل"
+      >
     </div>
 
-    <div class="footer">
-      تطبيق الناخب
+    <div class="field">
+      <label for="phone">2. رقم الهاتف</label>
+      <input
+        type="tel"
+        id="phone"
+        placeholder="أدخل رقم الهاتف"
+      >
     </div>
+
+    <div class="field">
+      <label for="province">3. المحافظة</label>
+      <input
+        type="text"
+        id="province"
+        placeholder="أدخل المحافظة"
+      >
+    </div>
+
+    <div class="field">
+      <label for="district">4. القضاء</label>
+      <input
+        type="text"
+        id="district"
+        placeholder="أدخل القضاء"
+      >
+    </div>
+
+    <div class="field">
+      <label for="center">5. المركز الانتخابي</label>
+      <input
+        type="text"
+        id="center"
+        placeholder="أدخل المركز الانتخابي"
+      >
+    </div>
+
+    <div class="field">
+      <label for="voterCard">6. صورة بطاقة الناخب</label>
+      <input
+        type="file"
+        id="voterCard"
+        accept="image/*"
+        capture="environment"
+      >
+    </div>
+
+    <div class="field">
+      <label for="personalId">7. صورة الهوية الشخصية</label>
+      <input
+        type="file"
+        id="personalId"
+        accept="image/*"
+        capture="environment"
+      >
+    </div>
+
+    <button id="locationBtn" type="button">
+      📍 تسجيل الدخول والتحقق من الموقع
+    </button>
+
+    <div id="status"></div>
+
+    <div id="locationBox" class="location-box">
+      📍 تم تحديد موقع الجهاز بنجاح
+      <br>
+      <span id="locationText"></span>
+    </div>
+
+    <button id="saveBtn" type="button" disabled>
+      💾 حفظ البيانات
+    </button>
 
   </div>
 
-  <script>
+  <div class="footer">
+    تطبيق الناخب
+  </div>
 
-    const fingerprintBtn =
-      document.getElementById("fingerprintBtn");
+</div>
 
-    const fingerprintStatus =
-      document.getElementById("fingerprintStatus");
+<script>
 
-    const locationBox =
-      document.getElementById("locationBox");
+  const locationBtn = document.getElementById("locationBtn");
+  const saveBtn = document.getElementById("saveBtn");
+  const status = document.getElementById("status");
+  const locationBox = document.getElementById("locationBox");
+  const locationText = document.getElementById("locationText");
 
-    const locationText =
-      document.getElementById("locationText");
+  const fullName = document.getElementById("fullName");
+  const phone = document.getElementById("phone");
+  const province = document.getElementById("province");
+  const district = document.getElementById("district");
+  const center = document.getElementById("center");
+  const voterCard = document.getElementById("voterCard");
+  const personalId = document.getElementById("personalId");
 
-    const saveBtn =
-      document.getElementById("saveBtn");
+  let currentLocation = null;
+  let locationVerified = false;
+  let verificationTime = null;
 
-    let currentLocation = null;
-    let verificationTime = null;
-    let locationVerified = false;
+  function showError(message) {
+    status.className = "error";
+    status.textContent = message;
+  }
 
-    /*
-      الخطوة الأولى:
-      عند الضغط على التحقق البيومتري
-      نطلب الموقع أولاً.
-    */
+  function showSuccess(message) {
+    status.className = "success";
+    status.textContent = message;
+  }
 
-    fingerprintBtn.addEventListener("click", () => {
+  /*
+    تسجيل الدخول والتحقق من الموقع
+  */
 
-      fingerprintStatus.className = "";
-      fingerprintStatus.textContent =
-        "📍 جارٍ تحديد موقع الجهاز...";
+  locationBtn.addEventListener("click", () => {
 
-      locationVerified = false;
+    locationVerified = false;
+    saveBtn.disabled = true;
 
-      if (!navigator.geolocation) {
+    locationBox.style.display = "none";
 
-        fingerprintStatus.className = "error";
+    status.className = "";
+    status.textContent = "📍 جارٍ تحديد موقع الجهاز...";
 
-        fingerprintStatus.textContent =
-          "❌ جهازك لا يدعم تحديد الموقع.";
+    if (!navigator.geolocation) {
+      showError("❌ جهازك لا يدعم تحديد الموقع.");
+      return;
+    }
 
-        return;
-      }
+    navigator.geolocation.getCurrentPosition(
 
-      navigator.geolocation.getCurrentPosition(
+      (position) => {
 
-        (position) => {
+        currentLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracy: position.coords.accuracy
+        };
 
-          currentLocation = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            accuracy: position.coords.accuracy
-          };
+        verificationTime = new Date().toISOString();
 
-          verificationTime =
-            new Date().toISOString();
+        locationVerified = true;
 
-          locationVerified = true;
+        showSuccess("✅ تم تسجيل الدخول والتحقق من موقع الجهاز.");
 
-          fingerprintStatus.className = "success";
+        locationBox.style.display = "block";
 
-          fingerprintStatus.textContent =
-            "✅ تم تحديد موقع الجهاز بنجاح";
+        locationText.textContent =
+          "دقة الموقع التقريبية: " +
+          Math.round(position.coords.accuracy) +
+          " متر";
 
-          locationBox.style.display = "block";
+        saveBtn.disabled = false;
+      },
 
-          locationText.textContent =
-            "تم تحديد الموقع بنجاح";
+      (error) => {
 
-        },
+        locationVerified = false;
+        saveBtn.disabled = true;
 
-        (error) => {
+        if (error.code === 1) {
 
-          locationVerified = false;
+          showError(
+            "❌ تم رفض إذن الموقع. اسمح للتطبيق باستخدام الموقع من إعدادات الهاتف."
+          );
 
-          fingerprintStatus.className = "error";
+        } else if (error.code === 2) {
 
-          if (error.code === 1) {
+          showError(
+            "❌ تعذر تحديد موقع الجهاز. تأكد من تشغيل خدمة الموقع."
+          );
 
-            fingerprintStatus.textContent =
-              "❌ تم رفض إذن الموقع. اسمح للتطبيق باستخدام الموقع من إعدادات الهاتف.";
+        } else if (error.code === 3) {
 
-          } else if (error.code === 2) {
+          showError(
+            "❌ انتهت مهلة تحديد الموقع. حاول مرة أخرى."
+          );
 
-            fingerprintStatus.textContent =
-              "❌ تعذر تحديد موقع الجهاز. تأكد من تشغيل الموقع.";
+        } else {
 
-          } else if (error.code === 3) {
-
-            fingerprintStatus.textContent =
-              "❌ انتهت مهلة تحديد الموقع. حاول مرة أخرى.";
-
-          } else {
-
-            fingerprintStatus.textContent =
-              "❌ تعذر تحديد موقع الجهاز.";
-
-          }
-
-        },
-
-        {
-          enableHighAccuracy: true,
-          timeout: 20000,
-          maximumAge: 0
+          showError(
+            "❌ تعذر تحديد موقع الجهاز."
+          );
         }
+      },
 
-      );
-
-    });
-
-
-    /*
-      منع الحفظ قبل تحديد الموقع.
-    */
-
-    saveBtn.addEventListener("click", () => {
-
-      if (!locationVerified) {
-
-        fingerprintStatus.className = "error";
-
-        fingerprintStatus.textContent =
-          "❌ يجب تحديد موقع الجهاز أولاً.";
-
-        return;
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0
       }
-
-      fingerprintStatus.className = "success";
-
-      fingerprintStatus.textContent =
-        "✅ تم التحقق من الموقع ويمكن المتابعة.";
-
-    });
+    );
+  });
 
 
-    /*
-      الكاميرا:
-      حقلا الصور يستخدمان:
-      accept="image/*"
-      capture="environment"
+  /*
+    اختيار صورة بطاقة الناخب
+  */
 
-      وهذا يسمح لأندرويد بإظهار خيار
-      التقاط صورة بالكاميرا عند اختيار الصورة.
-    */
+  voterCard.addEventListener("change", () => {
 
-    const voterCard =
-      document.getElementById("voterCard");
-
-    const personalId =
-      document.getElementById("personalId");
-
-    voterCard.addEventListener("change", () => {
-
-      if (voterCard.files.length > 0) {
-
-        fingerprintStatus.className = "success";
-
-        fingerprintStatus.textContent =
-          "📷 تم اختيار صورة بطاقة الناخب.";
-
-      }
-
-    });
+    if (voterCard.files.length > 0) {
+      showSuccess("📷 تم اختيار صورة بطاقة الناخب.");
+    }
+  });
 
 
-    personalId.addEventListener("change", () => {
+  /*
+    اختيار صورة الهوية
+  */
 
-      if (personalId.files.length > 0) {
+  personalId.addEventListener("change", () => {
 
-        fingerprintStatus.className = "success";
+    if (personalId.files.length > 0) {
+      showSuccess("📷 تم اختيار صورة الهوية الشخصية.");
+    }
+  });
 
-        fingerprintStatus.textContent =
-          "📷 تم اختيار صورة الهوية الشخصية.";
 
-      }
+  /*
+    حفظ البيانات
+  */
 
-    });
+  saveBtn.addEventListener("click", () => {
 
-  </script>
+    if (!locationVerified) {
+      showError("❌ يجب تسجيل الدخول والتحقق من الموقع أولاً.");
+      return;
+    }
+
+    if (!fullName.value.trim()) {
+      showError("❌ أدخل الاسم الكامل.");
+      fullName.focus();
+      return;
+    }
+
+    if (!phone.value.trim()) {
+      showError("❌ أدخل رقم الهاتف.");
+      phone.focus();
+      return;
+    }
+
+    if (!province.value.trim()) {
+      showError("❌ أدخل المحافظة.");
+      province.focus();
+      return;
+    }
+
+    if (!district.value.trim()) {
+      showError("❌ أدخل القضاء.");
+      district.focus();
+      return;
+    }
+
+    if (!center.value.trim()) {
+      showError("❌ أدخل المركز الانتخابي.");
+      center.focus();
+      return;
+    }
+
+    if (!voterCard.files.length) {
+      showError("❌ اختر صورة بطاقة الناخب.");
+      return;
+    }
+
+    if (!personalId.files.length) {
+      showError("❌ اختر صورة الهوية الشخصية.");
+      return;
+    }
+
+    showSuccess(
+      "✅ تم التحقق من البيانات والموقع، والبيانات جاهزة للحفظ."
+    );
+
+  });
+
+</script>
 
 </body>
 </html>
