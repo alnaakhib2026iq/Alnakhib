@@ -43,6 +43,40 @@ jobs:
       - name: Add Android
         run: npx cap add android
 
+      - name: Add Android permissions
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          manifest = Path(
+              "android/app/src/main/AndroidManifest.xml"
+          )
+
+          text = manifest.read_text()
+
+          permissions = """
+          <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+          <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+          <uses-permission android:name="android.permission.CAMERA" />
+          <uses-feature
+              android:name="android.hardware.camera.any"
+              android:required="false" />
+          <uses-feature
+              android:name="android.hardware.location.gps"
+              android:required="false" />
+          """
+
+          marker = "</manifest>"
+
+          if marker not in text:
+              raise SystemExit("AndroidManifest.xml غير صالح")
+
+          if "android.permission.ACCESS_FINE_LOCATION" not in text:
+              text = text.replace(marker, permissions + "\n" + marker)
+
+          manifest.write_text(text)
+          PY
+
       - name: Sync
         run: npx cap sync android
 
