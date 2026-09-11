@@ -183,6 +183,7 @@
           type="file"
           id="voterCard"
           accept="image/*"
+          capture="environment"
         >
       </div>
 
@@ -192,10 +193,11 @@
           type="file"
           id="personalId"
           accept="image/*"
+          capture="environment"
         >
       </div>
 
-      <button id="fingerprintBtn">
+      <button id="fingerprintBtn" type="button">
         🔐 التحقق البيومتري
       </button>
 
@@ -207,7 +209,7 @@
         <span id="locationText"></span>
       </div>
 
-      <button id="saveBtn">
+      <button id="saveBtn" type="button">
         💾 حفظ البيانات
       </button>
 
@@ -238,44 +240,168 @@
 
     let currentLocation = null;
     let verificationTime = null;
-fingerprintBtn.addEventListener("click", () => {
-  fingerprintStatus.textContent = "📍 جارٍ تحديد موقع الجهاز...";
+    let locationVerified = false;
 
-  if (!navigator.geolocation) {
-    fingerprintStatus.textContent =
-      "❌ جهازك لا يدعم تحديد الموقع.";
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      currentLocation = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        accuracy: position.coords.accuracy
-      };
-
-      verificationTime = new Date().toISOString();
-
-      fingerprintStatus.textContent =
-        "✅ تم التحقق وتحديد الموقع بنجاح";
-
-      locationBox.style.display = "block";
-
-      locationText.textContent =
-        "تم تحديد الموقع بنجاح";
-    },
-    () => {
-      fingerprintStatus.textContent =
-        "❌ تعذر تحديد موقع الجهاز. فعّل GPS واسمح للتطبيق باستخدام الموقع.";
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 20000,
-      maximumAge: 0
-    }
-  );
-});
     /*
-      زر التحقق البيومتري
-      يقوم بطلب تحديد موقع GPS بدون
+      الخطوة الأولى:
+      عند الضغط على التحقق البيومتري
+      نطلب الموقع أولاً.
+    */
+
+    fingerprintBtn.addEventListener("click", () => {
+
+      fingerprintStatus.className = "";
+      fingerprintStatus.textContent =
+        "📍 جارٍ تحديد موقع الجهاز...";
+
+      locationVerified = false;
+
+      if (!navigator.geolocation) {
+
+        fingerprintStatus.className = "error";
+
+        fingerprintStatus.textContent =
+          "❌ جهازك لا يدعم تحديد الموقع.";
+
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+
+        (position) => {
+
+          currentLocation = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy
+          };
+
+          verificationTime =
+            new Date().toISOString();
+
+          locationVerified = true;
+
+          fingerprintStatus.className = "success";
+
+          fingerprintStatus.textContent =
+            "✅ تم تحديد موقع الجهاز بنجاح";
+
+          locationBox.style.display = "block";
+
+          locationText.textContent =
+            "تم تحديد الموقع بنجاح";
+
+        },
+
+        (error) => {
+
+          locationVerified = false;
+
+          fingerprintStatus.className = "error";
+
+          if (error.code === 1) {
+
+            fingerprintStatus.textContent =
+              "❌ تم رفض إذن الموقع. اسمح للتطبيق باستخدام الموقع من إعدادات الهاتف.";
+
+          } else if (error.code === 2) {
+
+            fingerprintStatus.textContent =
+              "❌ تعذر تحديد موقع الجهاز. تأكد من تشغيل الموقع.";
+
+          } else if (error.code === 3) {
+
+            fingerprintStatus.textContent =
+              "❌ انتهت مهلة تحديد الموقع. حاول مرة أخرى.";
+
+          } else {
+
+            fingerprintStatus.textContent =
+              "❌ تعذر تحديد موقع الجهاز.";
+
+          }
+
+        },
+
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 0
+        }
+
+      );
+
+    });
+
+
+    /*
+      منع الحفظ قبل تحديد الموقع.
+    */
+
+    saveBtn.addEventListener("click", () => {
+
+      if (!locationVerified) {
+
+        fingerprintStatus.className = "error";
+
+        fingerprintStatus.textContent =
+          "❌ يجب تحديد موقع الجهاز أولاً.";
+
+        return;
+      }
+
+      fingerprintStatus.className = "success";
+
+      fingerprintStatus.textContent =
+        "✅ تم التحقق من الموقع ويمكن المتابعة.";
+
+    });
+
+
+    /*
+      الكاميرا:
+      حقلا الصور يستخدمان:
+      accept="image/*"
+      capture="environment"
+
+      وهذا يسمح لأندرويد بإظهار خيار
+      التقاط صورة بالكاميرا عند اختيار الصورة.
+    */
+
+    const voterCard =
+      document.getElementById("voterCard");
+
+    const personalId =
+      document.getElementById("personalId");
+
+    voterCard.addEventListener("change", () => {
+
+      if (voterCard.files.length > 0) {
+
+        fingerprintStatus.className = "success";
+
+        fingerprintStatus.textContent =
+          "📷 تم اختيار صورة بطاقة الناخب.";
+
+      }
+
+    });
+
+
+    personalId.addEventListener("change", () => {
+
+      if (personalId.files.length > 0) {
+
+        fingerprintStatus.className = "success";
+
+        fingerprintStatus.textContent =
+          "📷 تم اختيار صورة الهوية الشخصية.";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
