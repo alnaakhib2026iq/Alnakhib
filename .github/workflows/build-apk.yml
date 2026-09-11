@@ -26,6 +26,7 @@ jobs:
             "dependencies": {
               "@capacitor/android": "^7.4.3",
               "@capacitor/core": "^7.4.3",
+              "@capacitor/camera": "^7.0.0",
               "@aparajita/capacitor-biometric-auth": "^8.0.0"
             },
             "devDependencies": {
@@ -43,15 +44,15 @@ jobs:
       - name: Add Android
         run: npx cap add android
 
+      - name: Add Camera plugin
+        run: npx cap sync android
+
       - name: Add Android permissions
         run: |
           python3 - <<'PY'
           from pathlib import Path
 
-          manifest = Path(
-              "android/app/src/main/AndroidManifest.xml"
-          )
-
+          manifest = Path("android/app/src/main/AndroidManifest.xml")
           text = manifest.read_text()
 
           permissions = """
@@ -77,7 +78,7 @@ jobs:
           manifest.write_text(text)
           PY
 
-      - name: Sync
+      - name: Sync Capacitor
         run: npx cap sync android
 
       - name: Setup Java
