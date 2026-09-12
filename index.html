@@ -422,12 +422,7 @@
     SUPABASE_PUBLISHABLE_KEY
   );
 
-  saveBtn.addEventListener("click", async () => {
-
-    if (!locationVerified) {
-      showError("❌ يجب تسجيل الدخول والتحقق من الموقع أولاً.");
-      return;
-    }
+    saveBtn.addEventListener("click", async () => {
 
     if (!fullName.value.trim()) {
       showError("❌ أدخل الاسم الكامل.");
@@ -470,7 +465,6 @@
     }
 
     saveBtn.disabled = true;
-    status.className = "";
     status.textContent = "⏳ جارٍ حفظ البيانات...";
 
     try {
@@ -482,11 +476,7 @@
           phone: phone.value.trim(),
           province: province.value.trim(),
           district: district.value.trim(),
-          electoral_center: center.value.trim(),
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-          location_accuracy: currentLocation.accuracy,
-          location_verified_at: verificationTime
+          electoral_center: center.value.trim()
         });
 
       if (error) {
@@ -496,7 +486,8 @@
         return;
       }
 
-      showSuccess("✅ تم حفظ بيانات الناخب بنجاح.");
+      showSuccess("✅ تم حفظ البيانات بنجاح.");
+      saveBtn.disabled = false;
 
     } catch (error) {
 
@@ -505,10 +496,6 @@
       saveBtn.disabled = false;
 
     }
+
   });
-</script>
-
-</body>
-</html>   
-
 
