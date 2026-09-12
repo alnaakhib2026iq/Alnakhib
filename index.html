@@ -90,24 +90,24 @@
       cursor: pointer;
     }
 
-    #locationBtn {
+    #attendanceBtn {
       background: #198754;
       color: white;
+    }
+
+    #attendanceBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     #saveBtn {
       background: #0d6efd;
       color: white;
       min-height: 52px;
+      display: block;
     }
 
-    #attendanceBtn {
-      background: #6f42c1;
-      color: white;
-      min-height: 52px;
-    }
-
-    button:disabled {
+    #saveBtn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
@@ -130,43 +130,11 @@
       color: #842029;
     }
 
-    .info {
-      background: #cff4fc;
-      color: #055160;
-    }
-
-    .location-box {
-      display: none;
-      margin-top: 12px;
-      padding: 12px;
-      background: #e7f5ec;
-      color: #146c43;
-      border-radius: 10px;
-      text-align: center;
-    }
-
     .section-title {
       margin-top: 22px;
       margin-bottom: 5px;
       color: #0d6efd;
       font-size: 18px;
-      font-weight: bold;
-    }
-
-    .attendance-box {
-      margin-top: 25px;
-      padding-top: 20px;
-      border-top: 1px solid #e1e5ea;
-    }
-
-    .attendance-info {
-      background: #f3efff;
-      color: #4b2a80;
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      line-height: 1.7;
-      font-size: 14px;
     }
   </style>
 </head>
@@ -200,34 +168,30 @@
       <div class="section-title">الوثائق</div>
 
       <label for="voterCard">صورة بطاقة الناخب</label>
-      <input id="voterCard" type="file" accept="image/*" capture="environment">
+      <input
+        id="voterCard"
+        type="file"
+        accept="image/*"
+        capture="environment"
+      >
 
       <label for="personalId">صورة الهوية الشخصية</label>
-      <input id="personalId" type="file" accept="image/*" capture="environment">
+      <input
+        id="personalId"
+        type="file"
+        accept="image/*"
+        capture="environment"
+      >
 
-      <button id="locationBtn" type="button">
-        📍 تسجيل الموقع
+      <button id="attendanceBtn" type="button">
+        📍 تسجيل الحضور
       </button>
 
-      <div id="locationBox" class="location-box">
-        📍 تم تحديد موقع الجهاز بنجاح
-        <br>
-        <span id="locationText"></span>
-      </div>
+      <div id="status"></div>
 
       <button id="saveBtn" type="button">
         💾 حفظ البيانات
       </button>
-
-      <div class="attendance-box">
-
-        <div class="section-title">
-          تسجيل الحضور
-        </div>
-
-        
-
-      <div id="status"></div>
 
     </div>
   </div>
@@ -248,24 +212,14 @@
         SUPABASE_PUBLISHABLE_KEY
       );
 
+    const attendanceBtn =
+      document.getElementById("attendanceBtn");
 
     const saveBtn =
       document.getElementById("saveBtn");
 
-    const attendanceBtn =
-      document.getElementById("attendanceBtn");
-
-    const locationBtn =
-      document.getElementById("locationBtn");
-
     const status =
       document.getElementById("status");
-
-    const locationBox =
-      document.getElementById("locationBox");
-
-    const locationText =
-      document.getElementById("locationText");
 
     const fullName =
       document.getElementById("fullName");
@@ -289,97 +243,149 @@
       document.getElementById("personalId");
 
 
-    let currentLocation = null;
+    /*
+      ============================
+      تسجيل الحضور
+      ============================
+    */
 
+    attendanceBtn.addEventListener("click", async () => {
 
-    function showStatus(message, type) {
-      status.className = type || "";
-      status.textContent = message;
-    }
-
-
-    /* =========================
-       تسجيل الموقع
-    ========================= */
-
-    locationBtn.addEventListener("click", () => {
-
-      showStatus(
-        "📍 جارٍ تحديد موقع الجهاز...",
-        "info"
-      );
-
-      locationBox.style.display = "none";
-
-      if (!navigator.geolocation) {
-
-        showStatus(
-          "❌ جهازك لا يدعم تحديد الموقع.",
-          "error"
-        );
-
+      if (!fullName.value.trim()) {
+        status.className = "error";
+        status.textContent =
+          "❌ أدخل الاسم الكامل أولاً.";
+        fullName.focus();
         return;
       }
 
+      if (!navigator.geolocation) {
+        status.className = "error";
+        status.textContent =
+          "❌ جهازك لا يدعم تحديد الموقع.";
+        return;
+      }
+
+      attendanceBtn.disabled = true;
+
+      status.className = "";
+      status.textContent =
+        "📍 جارٍ تحديد موقع الجهاز...";
 
       navigator.geolocation.getCurrentPosition(
 
-        (position) => {
+        async (position) => {
 
-          currentLocation = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            accuracy: position.coords.accuracy
-          };
+          try {
 
+            const latitude =
+              position.coords.latitude;
 
-          showStatus(
-            "✅ تم تحديد موقع الجهاز بنجاح.",
-            "success"
-          );
+            const longitude =
+              position.coords.longitude;
 
+            const accuracy =
+              position.coords.accuracy;
 
-          locationBox.style.display = "block";
+            status.textContent =
+              "⏳ جارٍ تسجيل الحضور...";
 
+            const { data, error } =
+              await supabaseClient.rpc(
+                "record_attendance",
+                {
+                  p_full_name:
+                    fullName.value.trim(),
 
-          locationText.textContent =
-            "دقة الموقع التقريبية: " +
-            Math.round(position.coords.accuracy) +
-            " متر";
+                  p_latitude:
+                    latitude,
+
+                  p_longitude:
+                    longitude,
+
+                  p_accuracy:
+                    accuracy
+                }
+              );
+
+            if (error) {
+
+              console.error(error);
+
+              status.className = "error";
+
+              status.textContent =
+                "❌ فشل تسجيل الحضور: " +
+                error.message;
+
+              attendanceBtn.disabled = false;
+
+              return;
+            }
+
+            if (!data || data.success !== true) {
+
+              status.className = "error";
+
+              status.textContent =
+                "❌ " +
+                (
+                  data && data.message
+                    ? data.message
+                    : "تعذر تسجيل الحضور."
+                );
+
+              attendanceBtn.disabled = false;
+
+              return;
+            }
+
+            status.className = "success";
+
+            status.textContent =
+              "✅ تم تسجيل الحضور بنجاح.";
+
+            attendanceBtn.disabled = false;
+
+          } catch (error) {
+
+            console.error(error);
+
+            status.className = "error";
+
+            status.textContent =
+              "❌ حدث خطأ أثناء تسجيل الحضور.";
+
+            attendanceBtn.disabled = false;
+          }
         },
-
 
         (error) => {
 
+          attendanceBtn.disabled = false;
+
+          status.className = "error";
+
           if (error.code === 1) {
 
-            showStatus(
-              "❌ تم رفض إذن الموقع.",
-              "error"
-            );
+            status.textContent =
+              "❌ تم رفض إذن الموقع.";
 
           } else if (error.code === 2) {
 
-            showStatus(
-              "❌ تعذر تحديد موقع الجهاز.",
-              "error"
-            );
+            status.textContent =
+              "❌ تعذر تحديد موقع الجهاز.";
 
           } else if (error.code === 3) {
 
-            showStatus(
-              "❌ انتهت مهلة تحديد الموقع.",
-              "error"
-            );
+            status.textContent =
+              "❌ انتهت مهلة تحديد الموقع.";
 
           } else {
 
-            showStatus(
-              "❌ حدث خطأ أثناء تحديد الموقع.",
-              "error"
-            );
+            status.textContent =
+              "❌ حدث خطأ أثناء تحديد الموقع.";
           }
-
         },
 
         {
@@ -388,25 +394,24 @@
           maximumAge: 0
         }
       );
-
     });
 
 
-    /* =========================
-       اختيار الصور
-    ========================= */
+    /*
+      ============================
+      اختيار الصور
+      ============================
+    */
 
     voterCard.addEventListener("change", () => {
 
       if (voterCard.files.length > 0) {
 
-        showStatus(
-          "📷 تم اختيار صورة بطاقة الناخب.",
-          "success"
-        );
+        status.className = "success";
 
+        status.textContent =
+          "📷 تم اختيار صورة بطاقة الناخب.";
       }
-
     });
 
 
@@ -414,89 +419,94 @@
 
       if (personalId.files.length > 0) {
 
-        showStatus(
-          "📷 تم اختيار صورة الهوية الشخصية.",
-          "success"
-        );
+        status.className = "success";
 
+        status.textContent =
+          "📷 تم اختيار صورة الهوية الشخصية.";
       }
-
     });
 
 
-    /* =========================
-       حفظ بيانات الناخب
-       مستقل عن الموقع
-    ========================= */
+    /*
+      ============================
+      حفظ بيانات الناخب
+      الموقع غير مطلوب هنا
+      ============================
+    */
 
     saveBtn.addEventListener("click", async () => {
 
       if (!fullName.value.trim()) {
 
-        showStatus(
-          "❌ أدخل الاسم الكامل.",
-          "error"
-        );
+        status.className = "error";
+
+        status.textContent =
+          "❌ أدخل الاسم الكامل.";
 
         fullName.focus();
+
         return;
       }
 
 
       if (!phone.value.trim()) {
 
-        showStatus(
-          "❌ أدخل رقم الهاتف.",
-          "error"
-        );
+        status.className = "error";
+
+        status.textContent =
+          "❌ أدخل رقم الهاتف.";
 
         phone.focus();
+
         return;
       }
 
 
       if (!province.value.trim()) {
 
-        showStatus(
-          "❌ أدخل المحافظة.",
-          "error"
-        );
+        status.className = "error";
+
+        status.textContent =
+          "❌ أدخل المحافظة.";
 
         province.focus();
+
         return;
       }
 
 
       if (!district.value.trim()) {
 
-        showStatus(
-          "❌ أدخل القضاء.",
-          "error"
-        );
+        status.className = "error";
+
+        status.textContent =
+          "❌ أدخل القضاء.";
 
         district.focus();
+
         return;
       }
 
 
       if (!center.value.trim()) {
 
-        showStatus(
-          "❌ أدخل المركز الانتخابي.",
-          "error"
-        );
+        status.className = "error";
+
+        status.textContent =
+          "❌ أدخل المركز الانتخابي.";
 
         center.focus();
+
         return;
       }
 
 
       if (!voterCard.files.length) {
 
-        showStatus(
-          "❌ اختر صورة بطاقة الناخب.",
-          "error"
-        );
+        status.className = "error";
+
+        status.textContent =
+          "❌ اختر صورة بطاقة الناخب.";
 
         return;
       }
@@ -504,10 +514,10 @@
 
       if (!personalId.files.length) {
 
-        showStatus(
-          "❌ اختر صورة الهوية الشخصية.",
-          "error"
-        );
+        status.className = "error";
+
+        status.textContent =
+          "❌ اختر صورة الهوية الشخصية.";
 
         return;
       }
@@ -515,10 +525,10 @@
 
       saveBtn.disabled = true;
 
-      showStatus(
-        "⏳ جارٍ حفظ البيانات...",
-        "info"
-      );
+      status.className = "";
+
+      status.textContent =
+        "⏳ جارٍ حفظ البيانات...";
 
 
       try {
@@ -527,6 +537,7 @@
           await supabaseClient
             .from("voters")
             .insert({
+
               full_name:
                 fullName.value.trim(),
 
@@ -548,236 +559,41 @@
 
           console.error(error);
 
-          showStatus(
+          status.className = "error";
+
+          status.textContent =
             "❌ فشل حفظ البيانات: " +
-            error.message,
-            "error"
-          );
+            error.message;
 
           saveBtn.disabled = false;
+
           return;
         }
 
 
-        showStatus(
-          "✅ تم حفظ بيانات الناخب بنجاح.",
-          "success"
-        );
+        status.className = "success";
+
+        status.textContent =
+          "✅ تم حفظ البيانات بنجاح.";
+
+        saveBtn.disabled = false;
 
 
       } catch (error) {
 
         console.error(error);
 
-        showStatus(
-          "❌ حدث خطأ أثناء حفظ البيانات.",
-          "error"
-        );
+        status.className = "error";
 
+        status.textContent =
+          "❌ حدث خطأ أثناء حفظ البيانات.";
+
+        saveBtn.disabled = false;
       }
-
-
-      saveBtn.disabled = false;
 
     });
-
-
-    /* =========================
-       تسجيل الحضور
-    ========================= */
-
-    attendanceBtn.addEventListener(
-      "click",
-      async () => {
-
-        const name =
-          fullName.value.trim();
-
-
-        if (!name) {
-
-          showStatus(
-            "❌ أدخل الاسم الكامل أولاً.",
-            "error"
-          );
-
-          fullName.focus();
-
-          return;
-        }
-
-
-        attendanceBtn.disabled = true;
-
-
-        showStatus(
-          "📍 جارٍ تحديد موقعك لتسجيل الحضور...",
-          "info"
-        );
-
-
-        if (!navigator.geolocation) {
-
-          showStatus(
-            "❌ جهازك لا يدعم تحديد الموقع.",
-            "error"
-          );
-
-          attendanceBtn.disabled = false;
-
-          return;
-        }
-
-
-        navigator.geolocation.getCurrentPosition(
-
-          async (position) => {
-
-            const latitude =
-              position.coords.latitude;
-
-            const longitude =
-              position.coords.longitude;
-
-            const accuracy =
-              position.coords.accuracy;
-
-
-            showStatus(
-              "⏳ جارٍ تسجيل الحضور...",
-              "info"
-            );
-
-
-            try {
-
-              const { data, error } =
-                await supabaseClient.rpc(
-                  "record_attendance",
-                  {
-                    p_full_name: name,
-                    p_latitude: latitude,
-                    p_longitude: longitude,
-                    p_accuracy: accuracy
-                  }
-                );
-
-
-              if (error) {
-
-                console.error(error);
-
-                showStatus(
-                  "❌ تعذر تسجيل الحضور: " +
-                  error.message,
-                  "error"
-                );
-
-                attendanceBtn.disabled = false;
-
-                return;
-              }
-
-
-              if (!data || data.success !== true) {
-
-                showStatus(
-                  "❌ " +
-                  (
-                    data?.message ||
-                    "لم يتم تسجيل الحضور."
-                  ),
-                  "error"
-                );
-
-                attendanceBtn.disabled = false;
-
-                return;
-              }
-
-
-              showStatus(
-                "✅ تم تسجيل الحضور بنجاح.",
-                "success"
-              );
-
-
-              locationBox.style.display = "block";
-
-              locationText.textContent =
-                "تم تسجيل الموقع بدقة تقريبية " +
-                Math.round(accuracy) +
-                " متر";
-
-
-            } catch (error) {
-
-              console.error(error);
-
-              showStatus(
-                "❌ حدث خطأ أثناء تسجيل الحضور.",
-                "error"
-              );
-
-            }
-
-
-            attendanceBtn.disabled = false;
-
-          },
-
-
-          (error) => {
-
-            if (error.code === 1) {
-
-              showStatus(
-                "❌ يجب السماح بالوصول إلى الموقع لتسجيل الحضور.",
-                "error"
-              );
-
-            } else if (error.code === 2) {
-
-              showStatus(
-                "❌ تعذر تحديد موقع الجهاز.",
-                "error"
-              );
-
-            } else if (error.code === 3) {
-
-              showStatus(
-                "❌ انتهت مهلة تحديد الموقع.",
-                "error"
-              );
-
-            } else {
-
-              showStatus(
-                "❌ حدث خطأ أثناء تحديد الموقع.",
-                "error"
-              );
-
-            }
-
-
-            attendanceBtn.disabled = false;
-
-          },
-
-
-          {
-            enableHighAccuracy: true,
-            timeout: 20000,
-            maximumAge: 0
-          }
-
-        );
-
-      }
-    );
 
   </script>
 
 </body>
-
 </html>
