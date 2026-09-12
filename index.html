@@ -413,23 +413,106 @@
       return;
     }
 
-    showSuccess(
-      "✅ تم التحقق من البيانات والموقع، والبيانات جاهزة للحفظ."
-    );
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  });
-
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const SUPABASE_URL = "https://dsqufngpstfbavyopkva.supabase.co";
-  const SUPABASE_PUBLISHABLE_KEY
-    = "sb_publishable_jIAe_25gEDjB7oSEjiLOwg_BLE2SArS";
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
- </script> 
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_jIAe_25gEDjB7oSEjiLOwg_BLE2SArS";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  saveBtn.addEventListener("click", async () => {
+
+    if (!locationVerified) {
+      showError("❌ يجب تسجيل الدخول والتحقق من الموقع أولاً.");
+      return;
+    }
+
+    if (!fullName.value.trim()) {
+      showError("❌ أدخل الاسم الكامل.");
+      fullName.focus();
+      return;
+    }
+
+    if (!phone.value.trim()) {
+      showError("❌ أدخل رقم الهاتف.");
+      phone.focus();
+      return;
+    }
+
+    if (!province.value.trim()) {
+      showError("❌ أدخل المحافظة.");
+      province.focus();
+      return;
+    }
+
+    if (!district.value.trim()) {
+      showError("❌ أدخل القضاء.");
+      district.focus();
+      return;
+    }
+
+    if (!center.value.trim()) {
+      showError("❌ أدخل المركز الانتخابي.");
+      center.focus();
+      return;
+    }
+
+    if (!voterCard.files.length) {
+      showError("❌ اختر صورة بطاقة الناخب.");
+      return;
+    }
+
+    if (!personalId.files.length) {
+      showError("❌ اختر صورة الهوية الشخصية.");
+      return;
+    }
+
+    saveBtn.disabled = true;
+    status.className = "";
+    status.textContent = "⏳ جارٍ حفظ البيانات...";
+
+    try {
+
+      const { error } = await supabaseClient
+        .from("voters")
+        .insert({
+          full_name: fullName.value.trim(),
+          phone: phone.value.trim(),
+          province: province.value.trim(),
+          district: district.value.trim(),
+          electoral_center: center.value.trim(),
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          location_accuracy: currentLocation.accuracy,
+          location_verified_at: verificationTime
+        });
+
+      if (error) {
+        console.error(error);
+        showError("❌ فشل حفظ البيانات: " + error.message);
+        saveBtn.disabled = false;
+        return;
+      }
+
+      showSuccess("✅ تم حفظ بيانات الناخب بنجاح.");
+
+    } catch (error) {
+
+      console.error(error);
+      showError("❌ حدث خطأ أثناء حفظ البيانات.");
+      saveBtn.disabled = false;
+
+    }
+  });
+</script>
+
 </body>
-</html>
+</html>   
+
 
