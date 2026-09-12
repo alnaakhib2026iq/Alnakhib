@@ -151,19 +151,39 @@
     <div class="card">
 
       <label for="fullName">الاسم الكامل</label>
-      <input id="fullName" type="text" placeholder="أدخل الاسم الكامل">
+      <input
+        id="fullName"
+        type="text"
+        placeholder="أدخل الاسم الكامل"
+      >
 
       <label for="phone">رقم الهاتف</label>
-      <input id="phone" type="tel" placeholder="أدخل رقم الهاتف">
+      <input
+        id="phone"
+        type="tel"
+        placeholder="أدخل رقم الهاتف"
+      >
 
       <label for="province">المحافظة</label>
-      <input id="province" type="text" placeholder="أدخل المحافظة">
+      <input
+        id="province"
+        type="text"
+        placeholder="أدخل المحافظة"
+      >
 
       <label for="district">القضاء</label>
-      <input id="district" type="text" placeholder="أدخل القضاء">
+      <input
+        id="district"
+        type="text"
+        placeholder="أدخل القضاء"
+      >
 
       <label for="center">المركز الانتخابي</label>
-      <input id="center" type="text" placeholder="أدخل المركز الانتخابي">
+      <input
+        id="center"
+        type="text"
+        placeholder="أدخل المركز الانتخابي"
+      >
 
       <div class="section-title">الوثائق</div>
 
@@ -183,12 +203,14 @@
         capture="environment"
       >
 
+      <!-- تسجيل الحضور يعتمد على الموقع فقط -->
       <button id="attendanceBtn" type="button">
         📍 تسجيل الحضور
       </button>
 
       <div id="status"></div>
 
+      <!-- حفظ بيانات الناخب مستقل عن تسجيل الحضور -->
       <button id="saveBtn" type="button">
         💾 حفظ البيانات
       </button>
@@ -211,6 +233,7 @@
         SUPABASE_URL,
         SUPABASE_PUBLISHABLE_KEY
       );
+
 
     const attendanceBtn =
       document.getElementById("attendanceBtn");
@@ -244,58 +267,59 @@
 
 
     /*
-      ============================
-      تسجيل الحضور
-      ============================
+    ==========================================
+    تسجيل الحضور
+    يعتمد على الموقع فقط
+    ==========================================
     */
 
-    attendanceBtn.addEventListener("click", async () => {
-
-      if (!fullName.value.trim()) {
-        status.className = "error";
-        status.textContent =
-          "❌ أدخل الاسم الكامل أولاً.";
-        fullName.focus();
-        return;
-      }
+    attendanceBtn.addEventListener("click", () => {
 
       if (!navigator.geolocation) {
+
         status.className = "error";
+
         status.textContent =
           "❌ جهازك لا يدعم تحديد الموقع.";
+
         return;
       }
+
 
       attendanceBtn.disabled = true;
 
       status.className = "";
+
       status.textContent =
-        "📍 جارٍ تحديد موقع الجهاز...";
+        "📍 جارٍ فتح وتحديد موقع الجهاز...";
+
 
       navigator.geolocation.getCurrentPosition(
 
         async (position) => {
 
+          const latitude =
+            position.coords.latitude;
+
+          const longitude =
+            position.coords.longitude;
+
+          const accuracy =
+            position.coords.accuracy;
+
+
+          status.textContent =
+            "⏳ تم تحديد الموقع، جارٍ تسجيل الحضور...";
+
+
           try {
-
-            const latitude =
-              position.coords.latitude;
-
-            const longitude =
-              position.coords.longitude;
-
-            const accuracy =
-              position.coords.accuracy;
-
-            status.textContent =
-              "⏳ جارٍ تسجيل الحضور...";
 
             const { data, error } =
               await supabaseClient.rpc(
                 "record_attendance",
                 {
                   p_full_name:
-                    fullName.value.trim(),
+                    fullName.value.trim() || null,
 
                   p_latitude:
                     latitude,
@@ -307,6 +331,7 @@
                     accuracy
                 }
               );
+
 
             if (error) {
 
@@ -322,6 +347,7 @@
 
               return;
             }
+
 
             if (!data || data.success !== true) {
 
@@ -339,6 +365,7 @@
 
               return;
             }
+
 
             status.className = "success";
 
@@ -358,7 +385,9 @@
 
             attendanceBtn.disabled = false;
           }
+
         },
+
 
         (error) => {
 
@@ -366,10 +395,11 @@
 
           status.className = "error";
 
+
           if (error.code === 1) {
 
             status.textContent =
-              "❌ تم رفض إذن الموقع.";
+              "❌ يجب السماح للتطبيق بالوصول إلى الموقع.";
 
           } else if (error.code === 2) {
 
@@ -388,19 +418,21 @@
           }
         },
 
+
         {
           enableHighAccuracy: true,
           timeout: 20000,
           maximumAge: 0
         }
       );
+
     });
 
 
     /*
-      ============================
-      اختيار الصور
-      ============================
+    ==========================================
+    اختيار صورة بطاقة الناخب
+    ==========================================
     */
 
     voterCard.addEventListener("change", () => {
@@ -412,8 +444,15 @@
         status.textContent =
           "📷 تم اختيار صورة بطاقة الناخب.";
       }
+
     });
 
+
+    /*
+    ==========================================
+    اختيار صورة الهوية الشخصية
+    ==========================================
+    */
 
     personalId.addEventListener("change", () => {
 
@@ -424,14 +463,15 @@
         status.textContent =
           "📷 تم اختيار صورة الهوية الشخصية.";
       }
+
     });
 
 
     /*
-      ============================
-      حفظ بيانات الناخب
-      الموقع غير مطلوب هنا
-      ============================
+    ==========================================
+    حفظ بيانات الناخب
+    مستقل تمامًا عن الموقع
+    ==========================================
     */
 
     saveBtn.addEventListener("click", async () => {
