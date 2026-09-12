@@ -104,7 +104,6 @@
       background: #0d6efd;
       color: white;
       min-height: 52px;
-      display: block;
     }
 
     #saveBtn:disabled {
@@ -203,14 +202,12 @@
         capture="environment"
       >
 
-      <!-- تسجيل الحضور يعتمد على الموقع فقط -->
       <button id="attendanceBtn" type="button">
         📍 تسجيل الحضور
       </button>
 
       <div id="status"></div>
 
-      <!-- حفظ بيانات الناخب مستقل عن تسجيل الحضور -->
       <button id="saveBtn" type="button">
         💾 حفظ البيانات
       </button>
@@ -266,10 +263,22 @@
       document.getElementById("personalId");
 
 
+    function showSuccess(message) {
+      status.className = "success";
+      status.textContent = message;
+    }
+
+
+    function showError(message) {
+      status.className = "error";
+      status.textContent = message;
+    }
+
+
     /*
     ==========================================
     تسجيل الحضور
-    يعتمد على الموقع فقط
+    الموقع فقط
     ==========================================
     */
 
@@ -277,21 +286,19 @@
 
       if (!navigator.geolocation) {
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ جهازك لا يدعم تحديد الموقع.";
+        showError(
+          "❌ جهازك لا يدعم تحديد الموقع."
+        );
 
         return;
       }
-
 
       attendanceBtn.disabled = true;
 
       status.className = "";
 
       status.textContent =
-        "📍 جارٍ فتح وتحديد موقع الجهاز...";
+        "📍 جارٍ تحديد موقع الجهاز...";
 
 
       navigator.geolocation.getCurrentPosition(
@@ -337,11 +344,10 @@
 
               console.error(error);
 
-              status.className = "error";
-
-              status.textContent =
+              showError(
                 "❌ فشل تسجيل الحضور: " +
-                error.message;
+                error.message
+              );
 
               attendanceBtn.disabled = false;
 
@@ -351,15 +357,14 @@
 
             if (!data || data.success !== true) {
 
-              status.className = "error";
-
-              status.textContent =
+              showError(
                 "❌ " +
                 (
                   data && data.message
                     ? data.message
                     : "تعذر تسجيل الحضور."
-                );
+                )
+              );
 
               attendanceBtn.disabled = false;
 
@@ -367,10 +372,9 @@
             }
 
 
-            status.className = "success";
-
-            status.textContent =
-              "✅ تم تسجيل الحضور بنجاح.";
+            showSuccess(
+              "✅ تم تسجيل الحضور بنجاح."
+            );
 
             attendanceBtn.disabled = false;
 
@@ -378,10 +382,9 @@
 
             console.error(error);
 
-            status.className = "error";
-
-            status.textContent =
-              "❌ حدث خطأ أثناء تسجيل الحضور.";
+            showError(
+              "❌ حدث خطأ أثناء تسجيل الحضور."
+            );
 
             attendanceBtn.disabled = false;
           }
@@ -393,28 +396,29 @@
 
           attendanceBtn.disabled = false;
 
-          status.className = "error";
-
-
           if (error.code === 1) {
 
-            status.textContent =
-              "❌ يجب السماح للتطبيق بالوصول إلى الموقع.";
+            showError(
+              "❌ يجب السماح للتطبيق بالوصول إلى الموقع."
+            );
 
           } else if (error.code === 2) {
 
-            status.textContent =
-              "❌ تعذر تحديد موقع الجهاز.";
+            showError(
+              "❌ تعذر تحديد موقع الجهاز."
+            );
 
           } else if (error.code === 3) {
 
-            status.textContent =
-              "❌ انتهت مهلة تحديد الموقع.";
+            showError(
+              "❌ انتهت مهلة تحديد الموقع."
+            );
 
           } else {
 
-            status.textContent =
-              "❌ حدث خطأ أثناء تحديد الموقع.";
+            showError(
+              "❌ حدث خطأ أثناء تحديد الموقع."
+            );
           }
         },
 
@@ -425,13 +429,12 @@
           maximumAge: 0
         }
       );
-
     });
 
 
     /*
     ==========================================
-    اختيار صورة بطاقة الناخب
+    اختيار الصور
     ==========================================
     */
 
@@ -439,38 +442,85 @@
 
       if (voterCard.files.length > 0) {
 
-        status.className = "success";
-
-        status.textContent =
-          "📷 تم اختيار صورة بطاقة الناخب.";
+        showSuccess(
+          "📷 تم اختيار صورة بطاقة الناخب."
+        );
       }
-
     });
 
-
-    /*
-    ==========================================
-    اختيار صورة الهوية الشخصية
-    ==========================================
-    */
 
     personalId.addEventListener("change", () => {
 
       if (personalId.files.length > 0) {
 
-        status.className = "success";
-
-        status.textContent =
-          "📷 تم اختيار صورة الهوية الشخصية.";
+        showSuccess(
+          "📷 تم اختيار صورة الهوية الشخصية."
+        );
       }
-
     });
 
 
     /*
     ==========================================
-    حفظ بيانات الناخب
-    مستقل تمامًا عن الموقع
+    رفع صورة إلى Storage
+    ==========================================
+    */
+
+    async function uploadDocument(file, folder) {
+
+      const extension =
+        file.name.includes(".")
+          ? file.name.split(".").pop().toLowerCase()
+          : "jpg";
+
+
+      const safeExtension =
+        /^[a-z0-9]+$/.test(extension)
+          ? extension
+          : "jpg";
+
+
+      const fileName =
+        Date.now() +
+        "_" +
+        crypto.randomUUID() +
+        "." +
+        safeExtension;
+
+
+      const filePath =
+        folder + "/" + fileName;
+
+
+      const { error } =
+        await supabaseClient
+          .storage
+          .from("voter-documents")
+          .upload(
+            filePath,
+            file,
+            {
+              contentType:
+                file.type || "image/jpeg",
+
+              upsert: false
+            }
+          );
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      return filePath;
+    }
+
+
+    /*
+    ==========================================
+    حفظ بيانات الناخب + الصور
+    الموقع غير مطلوب
     ==========================================
     */
 
@@ -478,10 +528,9 @@
 
       if (!fullName.value.trim()) {
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ أدخل الاسم الكامل.";
+        showError(
+          "❌ أدخل الاسم الكامل."
+        );
 
         fullName.focus();
 
@@ -491,10 +540,9 @@
 
       if (!phone.value.trim()) {
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ أدخل رقم الهاتف.";
+        showError(
+          "❌ أدخل رقم الهاتف."
+        );
 
         phone.focus();
 
@@ -504,10 +552,9 @@
 
       if (!province.value.trim()) {
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ أدخل المحافظة.";
+        showError(
+          "❌ أدخل المحافظة."
+        );
 
         province.focus();
 
@@ -517,10 +564,9 @@
 
       if (!district.value.trim()) {
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ أدخل القضاء.";
+        showError(
+          "❌ أدخل القضاء."
+        );
 
         district.focus();
 
@@ -530,10 +576,9 @@
 
       if (!center.value.trim()) {
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ أدخل المركز الانتخابي.";
+        showError(
+          "❌ أدخل المركز الانتخابي."
+        );
 
         center.focus();
 
@@ -543,10 +588,9 @@
 
       if (!voterCard.files.length) {
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ اختر صورة بطاقة الناخب.";
+        showError(
+          "❌ اختر صورة بطاقة الناخب."
+        );
 
         return;
       }
@@ -554,10 +598,60 @@
 
       if (!personalId.files.length) {
 
-        status.className = "error";
+        showError(
+          "❌ اختر صورة الهوية الشخصية."
+        );
 
-        status.textContent =
-          "❌ اختر صورة الهوية الشخصية.";
+        return;
+      }
+
+
+      const voterCardFile =
+        voterCard.files[0];
+
+      const personalIdFile =
+        personalId.files[0];
+
+
+      if (!voterCardFile.type.startsWith("image/")) {
+
+        showError(
+          "❌ ملف بطاقة الناخب يجب أن يكون صورة."
+        );
+
+        return;
+      }
+
+
+      if (!personalIdFile.type.startsWith("image/")) {
+
+        showError(
+          "❌ ملف الهوية الشخصية يجب أن يكون صورة."
+        );
+
+        return;
+      }
+
+
+      const maxSize =
+        10 * 1024 * 1024;
+
+
+      if (voterCardFile.size > maxSize) {
+
+        showError(
+          "❌ صورة بطاقة الناخب أكبر من 10 ميغابايت."
+        );
+
+        return;
+      }
+
+
+      if (personalIdFile.size > maxSize) {
+
+        showError(
+          "❌ صورة الهوية الشخصية أكبر من 10 ميغابايت."
+        );
 
         return;
       }
@@ -568,10 +662,36 @@
       status.className = "";
 
       status.textContent =
-        "⏳ جارٍ حفظ البيانات...";
+        "⏳ جارٍ رفع صور الوثائق...";
+
+
+      let voterCardPath = null;
+      let personalIdPath = null;
 
 
       try {
+
+        voterCardPath =
+          await uploadDocument(
+            voterCardFile,
+            "voter-cards"
+          );
+
+
+        status.textContent =
+          "⏳ تم رفع بطاقة الناخب، جارٍ رفع الهوية...";
+
+
+        personalIdPath =
+          await uploadDocument(
+            personalIdFile,
+            "personal-ids"
+          );
+
+
+        status.textContent =
+          "⏳ جارٍ حفظ بيانات الناخب...";
+
 
         const { error } =
           await supabaseClient
@@ -591,7 +711,13 @@
                 district.value.trim(),
 
               electoral_center:
-                center.value.trim()
+                center.value.trim(),
+
+              voter_card_path:
+                voterCardPath,
+
+              personal_id_path:
+                personalIdPath
             });
 
 
@@ -599,11 +725,10 @@
 
           console.error(error);
 
-          status.className = "error";
-
-          status.textContent =
-            "❌ فشل حفظ البيانات: " +
-            error.message;
+          showError(
+            "❌ فشل حفظ بيانات الناخب: " +
+            error.message
+          );
 
           saveBtn.disabled = false;
 
@@ -611,10 +736,9 @@
         }
 
 
-        status.className = "success";
-
-        status.textContent =
-          "✅ تم حفظ البيانات بنجاح.";
+        showSuccess(
+          "✅ تم حفظ بيانات الناخب والصور بنجاح."
+        );
 
         saveBtn.disabled = false;
 
@@ -623,10 +747,9 @@
 
         console.error(error);
 
-        status.className = "error";
-
-        status.textContent =
-          "❌ حدث خطأ أثناء حفظ البيانات.";
+        showError(
+          "❌ حدث خطأ أثناء رفع الصور أو حفظ البيانات."
+        );
 
         saveBtn.disabled = false;
       }
