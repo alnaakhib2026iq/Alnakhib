@@ -366,10 +366,8 @@
 
   saveBtn.addEventListener("click", () => {
 
-    if (!locationVerified) {
-      showError("❌ يجب تسجيل الدخول والتحقق من الموقع أولاً.");
-      return;
-    }
+    
+    
 
     if (!fullName.value.trim()) {
       showError("❌ أدخل الاسم الكامل.");
