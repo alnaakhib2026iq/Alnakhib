@@ -366,48 +366,6 @@
 
   saveBtn.addEventListener("click", () => {
 
-    
-    
-
-    if (!fullName.value.trim()) {
-      showError("❌ أدخل الاسم الكامل.");
-      fullName.focus();
-      return;
-    }
-
-    if (!phone.value.trim()) {
-      showError("❌ أدخل رقم الهاتف.");
-      phone.focus();
-      return;
-    }
-
-    if (!province.value.trim()) {
-      showError("❌ أدخل المحافظة.");
-      province.focus();
-      return;
-    }
-
-    if (!district.value.trim()) {
-      showError("❌ أدخل القضاء.");
-      district.focus();
-      return;
-    }
-
-    if (!center.value.trim()) {
-      showError("❌ أدخل المركز الانتخابي.");
-      center.focus();
-      return;
-    }
-
-    if (!voterCard.files.length) {
-      showError("❌ اختر صورة بطاقة الناخب.");
-      return;
-    }
-
-    if (!personalId.files.length) {
-      showError("❌ اختر صورة الهوية الشخصية.");
-      return;
-    }
 
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
