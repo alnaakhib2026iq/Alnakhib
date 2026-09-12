@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta name="theme-color" content="#0d6efd">
 
   <title>الناخب</title>
@@ -20,56 +22,73 @@
     }
 
     .container {
-      max-width: 600px;
-      margin: 0 auto;
+      max-width: 500px;
+      margin: auto;
       padding: 20px;
     }
 
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    }
-
-    h1 {
+    .header {
       text-align: center;
-      color: #0d6efd;
-      margin: 0 0 25px;
+      margin-bottom: 20px;
     }
 
-    .field {
-      margin-bottom: 18px;
+    .header h1 {
+      margin: 0;
+      color: #0d6efd;
+      font-size: 30px;
+    }
+
+    .header p {
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     }
 
     label {
       display: block;
+      margin-top: 15px;
+      margin-bottom: 7px;
       font-weight: bold;
-      margin-bottom: 8px;
     }
 
-    input {
+    input[type="text"],
+    input[type="tel"] {
       width: 100%;
       padding: 13px;
-      border: 1px solid #ccc;
+      border: 1px solid #d5dbe3;
       border-radius: 10px;
       font-size: 16px;
-      background: #fff;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus {
+      border-color: #0d6efd;
     }
 
     input[type="file"] {
+      width: 100%;
       padding: 10px;
+      border: 1px solid #d5dbe3;
+      border-radius: 10px;
+      background: #fafafa;
     }
 
     button {
       width: 100%;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 14px;
+      margin-top: 18px;
       font-size: 17px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 8px;
     }
 
     #locationBtn {
@@ -80,378 +99,440 @@
     #saveBtn {
       background: #0d6efd;
       color: white;
-      margin-top: 15px;
+      min-height: 52px;
+      display: block;
     }
 
     #saveBtn:disabled {
-      background: #9bbce8;
+      opacity: 0.6;
       cursor: not-allowed;
     }
 
-    button:active {
-      transform: scale(0.99);
-    }
-
     #status {
-      text-align: center;
-      margin-top: 14px;
-      font-weight: bold;
-      line-height: 1.7;
-    }
-
-    .location-box {
-      background: #f1f8ff;
-      border: 1px solid #b8daff;
+      margin-top: 15px;
+      padding: 10px;
       border-radius: 10px;
-      padding: 12px;
-      margin-top: 12px;
-      font-size: 14px;
-      display: none;
+      text-align: center;
+      min-height: 20px;
     }
 
     .success {
-      color: #198754;
+      background: #d1e7dd;
+      color: #0f5132;
     }
 
     .error {
-      color: #dc3545;
+      background: #f8d7da;
+      color: #842029;
     }
 
-    .footer {
+    .location-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      background: #e7f5ec;
+      color: #146c43;
+      border-radius: 10px;
       text-align: center;
-      margin-top: 18px;
-      color: #777;
-      font-size: 13px;
+    }
+
+    .section-title {
+      margin-top: 22px;
+      margin-bottom: 5px;
+      color: #0d6efd;
+      font-size: 18px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <div class="card">
-
-    <h1>الناخب</h1>
-
-    <div class="field">
-      <label for="fullName">1. الاسم الكامل</label>
-      <input
-        type="text"
-        id="fullName"
-        placeholder="أدخل الاسم الكامل"
-      >
+    <div class="header">
+      <h1>الناخب</h1>
+      <p>تسجيل بيانات الناخب</p>
     </div>
 
-    <div class="field">
-      <label for="phone">2. رقم الهاتف</label>
-      <input
-        type="tel"
-        id="phone"
-        placeholder="أدخل رقم الهاتف"
-      >
+    <div class="card">
+
+      <label for="fullName">الاسم الكامل</label>
+      <input id="fullName" type="text" placeholder="أدخل الاسم الكامل">
+
+      <label for="phone">رقم الهاتف</label>
+      <input id="phone" type="tel" placeholder="أدخل رقم الهاتف">
+
+      <label for="province">المحافظة</label>
+      <input id="province" type="text" placeholder="أدخل المحافظة">
+
+      <label for="district">القضاء</label>
+      <input id="district" type="text" placeholder="أدخل القضاء">
+
+      <label for="center">المركز الانتخابي</label>
+      <input id="center" type="text" placeholder="أدخل المركز الانتخابي">
+
+      <div class="section-title">الوثائق</div>
+
+      <label for="voterCard">صورة بطاقة الناخب</label>
+      <input id="voterCard" type="file" accept="image/*" capture="environment">
+
+      <label for="personalId">صورة الهوية الشخصية</label>
+      <input id="personalId" type="file" accept="image/*" capture="environment">
+
+      <button id="locationBtn" type="button">
+        📍 تسجيل الموقع
+      </button>
+
+      <div id="locationBox" class="location-box">
+        📍 تم تحديد موقع الجهاز بنجاح
+        <br>
+        <span id="locationText"></span>
+      </div>
+
+      <div id="status"></div>
+
+      <button id="saveBtn" type="button">
+        💾 حفظ البيانات
+      </button>
+
     </div>
-
-    <div class="field">
-      <label for="province">3. المحافظة</label>
-      <input
-        type="text"
-        id="province"
-        placeholder="أدخل المحافظة"
-      >
-    </div>
-
-    <div class="field">
-      <label for="district">4. القضاء</label>
-      <input
-        type="text"
-        id="district"
-        placeholder="أدخل القضاء"
-      >
-    </div>
-
-    <div class="field">
-      <label for="center">5. المركز الانتخابي</label>
-      <input
-        type="text"
-        id="center"
-        placeholder="أدخل المركز الانتخابي"
-      >
-    </div>
-
-    <div class="field">
-      <label for="voterCard">6. صورة بطاقة الناخب</label>
-      <input
-        type="file"
-        id="voterCard"
-        accept="image/*"
-        capture="environment"
-      >
-    </div>
-
-    <div class="field">
-      <label for="personalId">7. صورة الهوية الشخصية</label>
-      <input
-        type="file"
-        id="personalId"
-        accept="image/*"
-        capture="environment"
-      >
-    </div>
-
-    <button id="locationBtn" type="button">
-      📍 تسجيل الدخول والتحقق من الموقع
-    </button>
-
-    <div id="status"></div>
-
-    <div id="locationBox" class="location-box">
-      📍 تم تحديد موقع الجهاز بنجاح
-      <br>
-      <span id="locationText"></span>
-    </div>
-
-    <button id="saveBtn" type="button">
-
   </div>
 
-  <div class="footer">
-    تطبيق الناخب
-  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-</div>
+  <script>
 
-<script>
+    /* =========================
+       Supabase
+    ========================= */
 
-  const locationBtn = document.getElementById("locationBtn");
-  const saveBtn = document.getElementById("saveBtn");
-  const status = document.getElementById("status");
-  const locationBox = document.getElementById("locationBox");
-  const locationText = document.getElementById("locationText");
+    const SUPABASE_URL =
+      "https://dsqufngpstfbavyopkva.supabase.co";
 
-  const fullName = document.getElementById("fullName");
-  const phone = document.getElementById("phone");
-  const province = document.getElementById("province");
-  const district = document.getElementById("district");
-  const center = document.getElementById("center");
-  const voterCard = document.getElementById("voterCard");
-  const personalId = document.getElementById("personalId");
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_jIAe_25gEDjB7oSEjiLOwg_BLE2SArS";
 
-  let currentLocation = null;
-  let locationVerified = false;
-  let verificationTime = null;
-
-  function showError(message) {
-    status.className = "error";
-    status.textContent = message;
-  }
-
-  function showSuccess(message) {
-    status.className = "success";
-    status.textContent = message;
-  }
-
-  /*
-    تسجيل الدخول والتحقق من الموقع
-  */
-
-  locationBtn.addEventListener("click", () => {
-
-    locationVerified = false;
-    
-
-    locationBox.style.display = "none";
-
-    status.className = "";
-    status.textContent = "📍 جارٍ تحديد موقع الجهاز...";
-
-    if (!navigator.geolocation) {
-      showError("❌ جهازك لا يدعم تحديد الموقع.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-
-      (position) => {
-
-        currentLocation = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy
-        };
-
-        verificationTime = new Date().toISOString();
-
-        locationVerified = true;
-
-        showSuccess("✅ تم تسجيل الدخول والتحقق من موقع الجهاز.");
-
-        locationBox.style.display = "block";
-
-        locationText.textContent =
-          "دقة الموقع التقريبية: " +
-          Math.round(position.coords.accuracy) +
-          " متر";
-
-        saveBtn.disabled = false;
-      },
-
-      (error) => {
-
-        locationVerified = false;
-        
-
-        if (error.code === 1) {
-
-          showError(
-            "❌ تم رفض إذن الموقع. اسمح للتطبيق باستخدام الموقع من إعدادات الهاتف."
-          );
-
-        } else if (error.code === 2) {
-
-          showError(
-            "❌ تعذر تحديد موقع الجهاز. تأكد من تشغيل خدمة الموقع."
-          );
-
-        } else if (error.code === 3) {
-
-          showError(
-            "❌ انتهت مهلة تحديد الموقع. حاول مرة أخرى."
-          );
-
-        } else {
-
-          showError(
-            "❌ تعذر تحديد موقع الجهاز."
-          );
-        }
-      },
-
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 0
-      }
-    );
-  });
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
 
 
-  /*
-    اختيار صورة بطاقة الناخب
-  */
+    /* =========================
+       عناصر الصفحة
+    ========================= */
 
-  voterCard.addEventListener("change", () => {
+    const saveBtn = document.getElementById("saveBtn");
+    const locationBtn = document.getElementById("locationBtn");
 
-    if (voterCard.files.length > 0) {
-      showSuccess("📷 تم اختيار صورة بطاقة الناخب.");
-    }
-  });
+    const status = document.getElementById("status");
+
+    const locationBox =
+      document.getElementById("locationBox");
+
+    const locationText =
+      document.getElementById("locationText");
+
+    const fullName =
+      document.getElementById("fullName");
+
+    const phone =
+      document.getElementById("phone");
+
+    const province =
+      document.getElementById("province");
+
+    const district =
+      document.getElementById("district");
+
+    const center =
+      document.getElementById("center");
+
+    const voterCard =
+      document.getElementById("voterCard");
+
+    const personalId =
+      document.getElementById("personalId");
 
 
-  /*
-    اختيار صورة الهوية
-  */
+    /* =========================
+       الموقع
+       الموقع مستقل عن الحفظ
+    ========================= */
 
-  personalId.addEventListener("change", () => {
-
-    if (personalId.files.length > 0) {
-      showSuccess("📷 تم اختيار صورة الهوية الشخصية.");
-    }
-  });
+    let currentLocation = null;
+    let locationVerified = false;
+    let verificationTime = null;
 
 
-  /*
-    حفظ البيانات
-  */
+    locationBtn.addEventListener("click", () => {
 
-  
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      locationVerified = false;
 
-<script>
-  const SUPABASE_URL = "https://dsqufngpstfbavyopkva.supabase.co";
+      locationBox.style.display = "none";
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_jIAe_25gEDjB7oSEjiLOwg_BLE2SArS";
+      status.className = "";
+      status.textContent =
+        "📍 جارٍ تحديد موقع الجهاز...";
 
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+      if (!navigator.geolocation) {
 
-    saveBtn.addEventListener("click", async () => {
+        status.className = "error";
+        status.textContent =
+          "❌ جهازك لا يدعم تحديد الموقع.";
 
-    if (!fullName.value.trim()) {
-      showError("❌ أدخل الاسم الكامل.");
-      fullName.focus();
-      return;
-    }
-
-    if (!phone.value.trim()) {
-      showError("❌ أدخل رقم الهاتف.");
-      phone.focus();
-      return;
-    }
-
-    if (!province.value.trim()) {
-      showError("❌ أدخل المحافظة.");
-      province.focus();
-      return;
-    }
-
-    if (!district.value.trim()) {
-      showError("❌ أدخل القضاء.");
-      district.focus();
-      return;
-    }
-
-    if (!center.value.trim()) {
-      showError("❌ أدخل المركز الانتخابي.");
-      center.focus();
-      return;
-    }
-
-    if (!voterCard.files.length) {
-      showError("❌ اختر صورة بطاقة الناخب.");
-      return;
-    }
-
-    if (!personalId.files.length) {
-      showError("❌ اختر صورة الهوية الشخصية.");
-      return;
-    }
-
-    saveBtn.disabled = true;
-    status.textContent = "⏳ جارٍ حفظ البيانات...";
-
-    try {
-
-      const { error } = await supabaseClient
-        .from("voters")
-        .insert({
-          full_name: fullName.value.trim(),
-          phone: phone.value.trim(),
-          province: province.value.trim(),
-          district: district.value.trim(),
-          electoral_center: center.value.trim()
-        });
-
-      if (error) {
-        console.error(error);
-        showError("❌ فشل حفظ البيانات: " + error.message);
-        saveBtn.disabled = false;
         return;
       }
 
-      showSuccess("✅ تم حفظ البيانات بنجاح.");
-      saveBtn.disabled = false;
+      navigator.geolocation.getCurrentPosition(
 
-    } catch (error) {
+        (position) => {
 
-      console.error(error);
-      showError("❌ حدث خطأ أثناء حفظ البيانات.");
-      saveBtn.disabled = false;
+          currentLocation = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy
+          };
 
-    }
+          verificationTime =
+            new Date().toISOString();
 
-  });
+          locationVerified = true;
 
+          status.className = "success";
+          status.textContent =
+            "✅ تم تسجيل موقع الجهاز.";
+
+          locationBox.style.display = "block";
+
+          locationText.textContent =
+            "دقة الموقع التقريبية: " +
+            Math.round(position.coords.accuracy) +
+            " متر";
+        },
+
+        (error) => {
+
+          locationVerified = false;
+
+          if (error.code === 1) {
+
+            status.className = "error";
+            status.textContent =
+              "❌ تم رفض إذن الموقع.";
+
+          } else if (error.code === 2) {
+
+            status.className = "error";
+            status.textContent =
+              "❌ تعذر تحديد موقع الجهاز.";
+
+          } else if (error.code === 3) {
+
+            status.className = "error";
+            status.textContent =
+              "❌ انتهت مهلة تحديد الموقع.";
+
+          } else {
+
+            status.className = "error";
+            status.textContent =
+              "❌ حدث خطأ أثناء تحديد الموقع.";
+          }
+        },
+
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 0
+        }
+      );
+
+    });
+
+
+    /* =========================
+       اختيار الصور
+    ========================= */
+
+    voterCard.addEventListener("change", () => {
+
+      if (voterCard.files.length > 0) {
+
+        status.className = "success";
+        status.textContent =
+          "📷 تم اختيار صورة بطاقة الناخب.";
+      }
+
+    });
+
+
+    personalId.addEventListener("change", () => {
+
+      if (personalId.files.length > 0) {
+
+        status.className = "success";
+        status.textContent =
+          "📷 تم اختيار صورة الهوية الشخصية.";
+      }
+
+    });
+
+
+    /* =========================
+       حفظ البيانات
+       لا يعتمد على الموقع
+    ========================= */
+
+    saveBtn.addEventListener("click", async () => {
+
+      if (!fullName.value.trim()) {
+
+        status.className = "error";
+        status.textContent =
+          "❌ أدخل الاسم الكامل.";
+
+        fullName.focus();
+        return;
+      }
+
+
+      if (!phone.value.trim()) {
+
+        status.className = "error";
+        status.textContent =
+          "❌ أدخل رقم الهاتف.";
+
+        phone.focus();
+        return;
+      }
+
+
+      if (!province.value.trim()) {
+
+        status.className = "error";
+        status.textContent =
+          "❌ أدخل المحافظة.";
+
+        province.focus();
+        return;
+      }
+
+
+      if (!district.value.trim()) {
+
+        status.className = "error";
+        status.textContent =
+          "❌ أدخل القضاء.";
+
+        district.focus();
+        return;
+      }
+
+
+      if (!center.value.trim()) {
+
+        status.className = "error";
+        status.textContent =
+          "❌ أدخل المركز الانتخابي.";
+
+        center.focus();
+        return;
+      }
+
+
+      if (!voterCard.files.length) {
+
+        status.className = "error";
+        status.textContent =
+          "❌ اختر صورة بطاقة الناخب.";
+
+        return;
+      }
+
+
+      if (!personalId.files.length) {
+
+        status.className = "error";
+        status.textContent =
+          "❌ اختر صورة الهوية الشخصية.";
+
+        return;
+      }
+
+
+      saveBtn.disabled = true;
+
+      status.className = "";
+      status.textContent =
+        "⏳ جارٍ حفظ البيانات...";
+
+
+      try {
+
+        const { error } =
+          await supabaseClient
+            .from("voters")
+            .insert({
+
+              full_name:
+                fullName.value.trim(),
+
+              phone:
+                phone.value.trim(),
+
+              province:
+                province.value.trim(),
+
+              district:
+                district.value.trim(),
+
+              electoral_center:
+                center.value.trim()
+
+            });
+
+
+        if (error) {
+
+          console.error(error);
+
+          status.className = "error";
+
+          status.textContent =
+            "❌ فشل حفظ البيانات: " +
+            error.message;
+
+          saveBtn.disabled = false;
+
+          return;
+        }
+
+
+        status.className = "success";
+
+        status.textContent =
+          "✅ تم حفظ البيانات بنجاح.";
+
+        saveBtn.disabled = false;
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.className = "error";
+
+        status.textContent =
+          "❌ حدث خطأ أثناء حفظ البيانات.";
+
+        saveBtn.disabled = false;
+      }
+
+    });
+
+  </script>
+
+</body>
+  </html>
